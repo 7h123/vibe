@@ -1,0 +1,131 @@
+import { useState } from 'react';
+import { submitContact } from '../services/api';
+import { useScrollReveal } from '../hooks/useScrollReveal';
+import { Phone, Mail, MapPin, Instagram } from 'lucide-react';
+
+export default function Contact() {
+    useScrollReveal();
+    const [formData, setFormData] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
+    const [status, setStatus] = useState('idle');
+
+    const handleChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus('loading');
+        try {
+            await submitContact(formData);
+            setStatus('success');
+            setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
+        } catch (err) {
+            console.error(err);
+            setStatus('error');
+        }
+    };
+
+    return (
+        <div className="w-full bg-bg-primary pt-[64px] min-h-screen">
+            <div className="pt-20 px-5 max-w-7xl mx-auto pb-16" data-reveal>
+                <span className="font-body text-[10px] text-gold uppercase tracking-wider block mb-2">CONTACT</span>
+                <h1 className="font-display text-[36px] text-dark leading-none">Parlons de Votre Projet</h1>
+                <div className="w-10 h-[1px] bg-gold my-4"></div>
+            </div>
+
+            <div className="max-w-7xl mx-auto px-5 flex flex-col xl:flex-row gap-10 xl:gap-20">
+
+                {/* Contact info cards */}
+                <div className="w-full xl:w-5/12" data-reveal>
+                    <div className="flex flex-col gap-4">
+
+                        <a href="https://wa.me/212649668465" target="_blank" rel="noreferrer" className="group bg-bg-secondary p-6 border-l-[3px] border-gold hover:bg-[#F2EDE1] transition-colors">
+                            <Phone size={24} className="text-gold mb-3" strokeWidth={1.5} />
+                            <h3 className="font-display text-[18px] text-dark mb-1">WhatsApp / Téléphone</h3>
+                            <p className="font-body text-[12px] text-text-sec mb-4">0649668465</p>
+                            <span className="font-body text-[11px] text-gold tracking-wider uppercase group-hover:underline underline-offset-4">ENVOYER &rarr;</span>
+                        </a>
+
+                        <a href="https://instagram.com/novadesign.maa" target="_blank" rel="noreferrer" className="group bg-bg-secondary p-6 border-l-[3px] border-gold hover:bg-[#F2EDE1] transition-colors">
+                            <Instagram size={24} className="text-gold mb-3" strokeWidth={1.5} />
+                            <h3 className="font-display text-[18px] text-dark mb-1">Instagram</h3>
+                            <p className="font-body text-[12px] text-text-sec mb-4">@novadesign.maa</p>
+                            <span className="font-body text-[11px] text-gold tracking-wider uppercase group-hover:underline underline-offset-4">ENVOYER &rarr;</span>
+                        </a>
+
+                        <div className="bg-bg-secondary p-6 border-l-[3px] border-gold">
+                            <MapPin size={24} className="text-gold mb-3" strokeWidth={1.5} />
+                            <h3 className="font-display text-[18px] text-dark mb-1">Atelier</h3>
+                            <p className="font-body text-[12px] text-text-sec mb-4">Casablanca, Maroc<br />(Sur rendez-vous uniquement)</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                {/* Contact Form */}
+                <div className="w-full xl:w-7/12" data-reveal>
+                    <div className="bg-bg-secondary p-6 xl:p-10 border border-gold/15 relative">
+                        {status === 'success' ? (
+                            <div className="text-center py-20">
+                                <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4 text-gold text-2xl">✓</div>
+                                <h3 className="font-display text-[20px] text-dark mb-2">Message Envoyé</h3>
+                                <p className="font-body text-[14px] text-text-sec">Nous vous répondrons dans les plus brefs délais.</p>
+                                <button onClick={() => setStatus('idle')} className="mt-8 font-body text-[11px] uppercase tracking-wider text-gold border-b border-gold pb-1">Nouveau message</button>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div className="flex flex-col">
+                                        <label className="font-body text-[10px] tracking-wider text-text-sec uppercase mb-[6px]">Nom complet</label>
+                                        <input type="text" name="name" value={formData.name} onChange={handleChange} required className="h-12 bg-bg-primary border-b border-dark/20 focus:border-gold outline-none font-body text-[14px] text-dark px-3 rounded-none" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <label className="font-body text-[10px] tracking-wider text-text-sec uppercase mb-[6px]">Téléphone</label>
+                                        <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required className="h-12 bg-bg-primary border-b border-dark/20 focus:border-gold outline-none font-body text-[14px] text-dark px-3 rounded-none" />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col">
+                                    <label className="font-body text-[10px] tracking-wider text-text-sec uppercase mb-[6px]">Email (Optionnel)</label>
+                                    <input type="email" name="email" value={formData.email} onChange={handleChange} className="h-12 bg-bg-primary border-b border-dark/20 focus:border-gold outline-none font-body text-[14px] text-dark px-3 rounded-none" />
+                                </div>
+
+                                <div className="flex flex-col">
+                                    <label className="font-body text-[10px] tracking-wider text-text-sec uppercase mb-[6px]">Sujet</label>
+                                    <input type="text" name="subject" value={formData.subject} onChange={handleChange} className="h-12 bg-bg-primary border-b border-dark/20 focus:border-gold outline-none font-body text-[14px] text-dark px-3 rounded-none" />
+                                </div>
+
+                                <div className="flex flex-col">
+                                    <label className="font-body text-[10px] tracking-wider text-text-sec uppercase mb-[6px]">Message</label>
+                                    <textarea name="message" value={formData.message} onChange={handleChange} required placeholder="Comment pouvons-nous vous aider ?" className="h-[120px] bg-bg-primary border-b border-dark/20 focus:border-gold outline-none font-body text-[14px] text-dark p-3 resize-none rounded-none"></textarea>
+                                </div>
+
+                                {status === 'error' && <p className="font-body text-[11px] text-red-600 mb-2">Erreur lors de l'envoi. Veuillez réessayer.</p>}
+
+                                <button
+                                    type="submit"
+                                    disabled={status === 'loading'}
+                                    className="w-full h-[52px] bg-dark text-bg-primary font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-2"
+                                >
+                                    {status === 'loading' ? 'ENVOI...' : 'ENVOYER LE MESSAGE'}
+                                </button>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* OpenStreetMap */}
+            <div className="w-full mt-20 px-5 max-w-7xl mx-auto" data-reveal>
+                <div className="rounded-lg overflow-hidden border border-dark/10 shadow-sm leading-none flex">
+                    <iframe
+                        src="https://www.openstreetmap.org/export/embed.html?bbox=-7.6898,33.5731,-7.5498,33.6131&amp;layer=mapnik"
+                        width="100%"
+                        height="400"
+                        style={{ border: 'none', borderRadius: '8px' }}
+                        loading="lazy"
+                        title="Casablanca Location"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+    );
+}

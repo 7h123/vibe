@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #F0EBE1;
+  --color-bg-secondary: #FAF7F2;
+  --color-dark: #1A1715;
+  --color-gold: #C8A96E;
+  --color-gold-light: #E8D5A3;
+  --color-text-sec: #6B6359;
+  --color-obsidian: #0A0A0A;
+  --color-surface: #1A1A1A;
+  --color-champagne: #C8A96E;
+  --color-bronze: #8B7355;
+  --color-cream: #F5F0E8;
+
+  --font-display: 'Bodoni Moda', serif;
+  --font-heading: 'Prata', serif;
+  --font-serif: 'Amiri', serif;
+  --font-body: 'Tenor Sans', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
+
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-pulse-ring: pulseRing 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-reveal: reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes pulseRing {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  @keyframes reveal {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+:root {
+  /* Light palette (NOVA) */
+  --bg-primary: #F0EBE1;
+  --bg-secondary: #FAF7F2;
+  --dark: #1A1715;
+  --gold: #C8A96E;
+  --gold-light: #E8D5A3;
+  --text-primary: #1A1715;
+  --text-secondary: #6B6359;
+
+  /* Dark palette (Pierre d'Exception overlay) */
+  --obsidian: #0A0A0A;
+  --surface: #1A1A1A;
+  --champagne: #C8A96E;
+  --bronze: #8B7355;
+  --cream: #F5F0E8;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Tenor Sans', sans-serif;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+}
+
+/* Scroll Reveal */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Prevent broken image alt-text layout */
+img[src=""],
+img:not([src]) {
+  visibility: hidden;
+}
+
+/* Prevent layout shift while hero image loads */
+.hero-image-container {
+  background-color: #e8e3d8;
+  background-image: linear-gradient(135deg, #e8e3d8 0%, #d4cfc6 100%);
+}
