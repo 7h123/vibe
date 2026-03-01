@@ -1,0 +1,11 @@
+const mongoose = require('mongoose');
+
+const categorySchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
+    image: { type: String, default: '' },
+    type: { type: String, enum: ['decoration', 'marbre'], default: 'marbre' },
+    order: Number,
+    active: { type: Boolean, default: true },
+});
+module.exports = mongoose.model('Category', categorySchema);
