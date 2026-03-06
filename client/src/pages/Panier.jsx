@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { CartContext } from '../context/CartContext';
 import { submitOrder } from '../services/api';
 import { getImageUrl } from '../utils/imageUrl';
@@ -28,6 +29,12 @@ export default function Panier() {
     if (status === 'success') {
         return (
             <div className="w-full min-h-screen bg-bg-primary pt-[120px] pb-[60px] px-5 text-center">
+                <motion.div
+                    className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4 text-gold text-2xl"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: 'spring', stiffness: 200, delay: 0.3 }}
+                >✓</motion.div>
                 <h1 className="font-display text-[32px] text-dark mb-4">Commande Reçue</h1>
                 <p className="font-body text-[14px] text-text-sec mb-8">Nous vous contacterons très prochainement pour finaliser la livraison.</p>
                 <Link to="/catalogue" className="border-b border-gold font-body text-[11px] tracking-wider uppercase text-gold pb-1">Retour au catalogue</Link>
@@ -46,15 +53,30 @@ export default function Panier() {
 
                     {cartItems.length === 0 ? (
                         <div className="py-10 text-center xl:text-left">
+                            <motion.div
+                                className="text-gold text-5xl mb-4"
+                                animate={{ y: [-8, 0, -8] }}
+                                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                            >
+                                🛒
+                            </motion.div>
                             <p className="font-body text-[14px] text-text-sec mb-6">Votre panier est vide.</p>
-                            <Link to="/catalogue" className="bg-dark text-bg-primary font-body text-[11px] font-medium tracking-wider uppercase h-11 px-8 inline-flex items-center">
+                            <Link to="/catalogue" className="bg-dark text-bg-primary font-body text-[11px] font-medium tracking-wider uppercase h-11 px-8 inline-flex items-center hover:bg-gold hover:text-obsidian transition-all duration-250 cursor-pointer select-none active:scale-[0.97]">
                                 Découvrir nos créations
                             </Link>
                         </div>
                     ) : (
                         <div className="flex flex-col">
+                            <AnimatePresence>
                             {cartItems.map(item => (
-                                <div key={item.product} className="flex gap-4 py-5 border-b border-dark/10">
+                                <motion.div
+                                    key={item.product}
+                                    className="flex gap-4 py-5 border-b border-dark/10"
+                                    initial={{ opacity: 0, y: -16 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, x: -20, height: 0, transition: { duration: 0.3 } }}
+                                    layout
+                                >
                                     <div className="w-[80px] h-[80px] bg-bg-secondary shrink-0">
                                         {item.image && <img src={getImageUrl(item.image) || item.image} alt={item.name} className="w-full h-full object-cover" loading="lazy" decoding="async" width={80} height={80} />}
                                     </div>
@@ -77,17 +99,18 @@ export default function Panier() {
 
                                         <div className="flex justify-between items-end mt-auto">
                                             <div className="flex items-center h-8 border border-dark/20 text-[12px] font-body">
-                                                <button onClick={() => updateQty(item.product, item.qty - 1)} className="w-8 flex justify-center text-text-sec hover:text-dark">-</button>
+                                                <button onClick={() => updateQty(item.product, item.qty - 1)} className="w-8 flex justify-center text-text-sec hover:text-gold hover:border-gold active:scale-90 transition-all duration-150 cursor-pointer">-</button>
                                                 <span className="w-8 flex justify-center border-x border-dark/20 text-dark">{item.qty}</span>
-                                                <button onClick={() => updateQty(item.product, item.qty + 1)} className="w-8 flex justify-center text-text-sec hover:text-dark">+</button>
+                                                <button onClick={() => updateQty(item.product, item.qty + 1)} className="w-8 flex justify-center text-text-sec hover:text-gold hover:border-gold active:scale-90 transition-all duration-150 cursor-pointer">+</button>
                                             </div>
                                             <span className="font-body text-[16px] font-semibold text-gold">
                                                 {(item.price * item.qty).toLocaleString()} MAD
                                             </span>
                                         </div>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
+                            </AnimatePresence>
                         </div>
                     )}
                 </div>
@@ -131,7 +154,7 @@ export default function Panier() {
                                 <button
                                     type="submit"
                                     disabled={status === 'loading'}
-                                    className="w-full h-[52px] bg-gold text-dark font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-4"
+                                    className="w-full h-[52px] bg-gold text-dark font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-4 hover:bg-[#B8975E] transition-all duration-250 cursor-pointer select-none active:scale-[0.98]"
                                 >
                                     {status === 'loading' ? 'EN COURS...' : 'ENVOYER LA DEMANDE DE DEVIS'}
                                 </button>

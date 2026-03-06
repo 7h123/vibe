@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { submitDevis } from '../services/api';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function SurMesure() {
     useScrollReveal();
+    const stepsRef = useRef(null);
+    const stepsInView = useInView(stepsRef, { once: true, margin: '-80px' });
+    const formRef = useRef(null);
+    const formInView = useInView(formRef, { once: true, margin: '-80px' });
+
     const [formData, setFormData] = useState({
         type: '', material: '', dimensions: '', budget: '', description: '',
         customer: { name: '', phone: '', email: '' }
@@ -36,45 +42,73 @@ export default function SurMesure() {
         <div className="w-full bg-bg-primary pt-[64px]">
             {/* Hero (Pierre d'Exception) */}
             <section className="bg-obsidian min-h-[50vh] flex flex-col items-center justify-center p-6 xl:p-20 text-center">
-                <span className="font-body text-[10px] text-gold tracking-widest uppercase mb-4" data-reveal>
+                <motion.span
+                    className="font-body text-[10px] text-gold tracking-widest uppercase mb-4"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                >
                     SUR MESURE
-                </span>
-                <h1 className="font-serif text-[40px] text-cream leading-tight mb-2" data-reveal>
+                </motion.span>
+                <motion.h1
+                    className="font-serif text-[40px] text-cream leading-tight mb-2"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                >
                     Votre Vision,
-                </h1>
-                <h2 className="font-serif italic text-[40px] text-gold leading-tight mb-6" data-reveal>
+                </motion.h1>
+                <motion.h2
+                    className="font-serif italic text-[40px] text-gold leading-tight mb-6"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                >
                     Notre Savoir-Faire
-                </h2>
-                <p className="font-sans text-[14px] text-cream/60 max-w-xl mx-auto" data-reveal>
+                </motion.h2>
+                <motion.p
+                    className="font-sans text-[14px] text-cream/60 max-w-xl mx-auto"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.5 }}
+                >
                     Confiez-nous la réalisation de votre projet unique. De la sélection de la pierre à la finition,
                     nos artisans donnent vie à vos idées.
-                </p>
+                </motion.p>
             </section>
 
             <div className="max-w-7xl mx-auto flex flex-col xl:flex-row xl:items-start xl:py-20 py-[60px]">
                 {/* Steps */}
-                <div className="w-full xl:w-5/12 px-5 mb-12 xl:mb-0 xl:pr-16" data-reveal>
+                <div className="w-full xl:w-5/12 px-5 mb-12 xl:mb-0 xl:pr-16" ref={stepsRef}>
                     <div className="flex flex-col gap-8">
-                        <div className="flex flex-col border-b border-gold/20 pb-8">
-                            <span className="font-display text-[64px] text-gold/20 leading-none mb-2">01</span>
-                            <h3 className="font-display text-[20px] text-dark mb-2">Partagez votre projet</h3>
-                            <p className="font-body text-[13px] text-text-sec">Remplissez le formulaire avec vos dimensions, choix de matériaux et inspirations.</p>
-                        </div>
-                        <div className="flex flex-col border-b border-gold/20 pb-8">
-                            <span className="font-display text-[64px] text-gold/20 leading-none mb-2">02</span>
-                            <h3 className="font-display text-[20px] text-dark mb-2">Devis en 24h</h3>
-                            <p className="font-body text-[13px] text-text-sec">Notre équipe étudie votre demande et vous propose un devis détaillé et des conseils techniques.</p>
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="font-display text-[64px] text-gold/20 leading-none mb-2">03</span>
-                            <h3 className="font-display text-[20px] text-dark mb-2">Fabrication & Livraison</h3>
-                            <p className="font-body text-[13px] text-text-sec">Validation des plans, façonnage dans notre atelier, et livraison sécurisée chez vous.</p>
-                        </div>
+                        {[
+                            { num: '01', title: 'Partagez votre projet', desc: 'Remplissez le formulaire avec vos dimensions, choix de matériaux et inspirations.', border: true },
+                            { num: '02', title: 'Devis en 24h', desc: 'Notre équipe étudie votre demande et vous propose un devis détaillé et des conseils techniques.', border: true },
+                            { num: '03', title: 'Fabrication & Livraison', desc: 'Validation des plans, façonnage dans notre atelier, et livraison sécurisée chez vous.', border: false },
+                        ].map((step, i) => (
+                            <motion.div
+                                key={step.num}
+                                className={`flex flex-col ${step.border ? 'border-b border-gold/20 pb-8' : ''}`}
+                                initial={{ opacity: 0, scale: 0.7 }}
+                                animate={stepsInView ? { opacity: 1, scale: 1 } : {}}
+                                transition={{ type: 'spring', stiffness: 200, damping: 20, delay: i * 0.15 }}
+                            >
+                                <span className="font-display text-[64px] text-gold/20 leading-none mb-2">{step.num}</span>
+                                <h3 className="font-display text-[20px] text-dark mb-2">{step.title}</h3>
+                                <p className="font-body text-[13px] text-text-sec">{step.desc}</p>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
 
                 {/* Form Card */}
-                <div className="w-full xl:w-7/12 px-5" data-reveal>
+                <motion.div
+                    className="w-full xl:w-7/12 px-5"
+                    ref={formRef}
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={formInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6 }}
+                >
                     <div className="bg-bg-secondary p-6 xl:p-10 border border-gold/15">
                         <h2 className="font-display text-[24px] text-dark mb-2">Demander un Devis</h2>
                         <div className="w-8 h-[1px] bg-gold mb-8"></div>
@@ -158,14 +192,14 @@ export default function SurMesure() {
                                 <button
                                     type="submit"
                                     disabled={status === 'loading'}
-                                    className="w-full h-[52px] bg-gold text-dark font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-2"
+                                    className="w-full h-[52px] bg-gold text-dark font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-2 hover:bg-[#B8975E] transition-all duration-250 cursor-pointer select-none active:scale-[0.98]"
                                 >
                                     {status === 'loading' ? 'ENVOI EN COURS...' : 'ENVOYER MA DEMANDE'}
                                 </button>
                             </form>
                         )}
                     </div>
-                </div>
+                </motion.div>
             </div>
         </div>
     );

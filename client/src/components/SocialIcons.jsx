@@ -22,7 +22,7 @@ export default function SocialIcons() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={link.label}
-                    className="w-[44px] h-[44px] rounded-full flex items-center justify-center text-white transition-all duration-200"
+                    className="w-[44px] h-[44px] rounded-full flex items-center justify-center text-white/60 hover:text-gold hover:scale-110 transition-all duration-200"
                     style={{
                         background: '#1a1a1a',
                         border: '1px solid rgba(200,169,110,0.4)',

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ShoppingBag } from 'lucide-react';
 import { getImageUrl } from '../utils/imageUrl';
 
 export default function ProductCard({ product }) {
@@ -8,9 +9,9 @@ export default function ProductCard({ product }) {
             to={`/catalogue/${product.slug}`}
             className="block group cursor-pointer"
         >
-            {/* Image container — MUST have explicit aspect ratio */}
+            {/* Image container */}
             <div
-                className="overflow-hidden bg-bg-secondary w-full"
+                className="overflow-hidden bg-bg-secondary w-full relative"
                 style={{ aspectRatio: '3 / 4' }}
             >
                 <img
@@ -18,11 +19,17 @@ export default function ProductCard({ product }) {
                     alt={product.name}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.08]"
                     onError={(e) => {
                         e.target.style.display = 'none';
                     }}
                 />
+                <div className="absolute bottom-0 left-0 right-0 h-14 bg-obsidian/90 backdrop-blur-sm flex items-center justify-center gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                    <ShoppingBag size={14} className="text-cream" />
+                    <span className="text-cream text-[10px] tracking-[0.2em] uppercase font-body">
+                        Ajouter au Devis
+                    </span>
+                </div>
             </div>
 
             {/* Info */}
@@ -38,7 +45,7 @@ export default function ProductCard({ product }) {
                 <span className="inline-block font-body text-[9px] tracking-[0.15em] uppercase text-gold border border-gold px-2 py-0.5 mb-2">
                     {product.material}
                 </span>
-                <p className="font-body text-[10px] tracking-[0.15em] uppercase text-gold">
+                <p className="font-body text-[10px] tracking-[0.15em] uppercase text-gold opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
                     Voir le produit →
                 </p>
             </div>

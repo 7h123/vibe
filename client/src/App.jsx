@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
@@ -21,11 +22,35 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminDevis from './pages/admin/AdminDevis';
 import ProtectedRoute from './components/ProtectedRoute';
 
+function PageTransition({ children }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function AnimatedOutlet() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <PageTransition key={location.pathname}>
+        <Outlet />
+      </PageTransition>
+    </AnimatePresence>
+  );
+}
+
 function PublicLayout() {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <AnimatedOutlet />
       <Footer />
       <FloatingWhatsApp />
     </>

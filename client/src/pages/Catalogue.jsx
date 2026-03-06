@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { getProducts, getCategories } from '../services/api';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import ProductCard from '../components/ProductCard';
@@ -17,6 +18,11 @@ export default function Catalogue() {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const headerRef = useRef(null);
+    const headerInView = useInView(headerRef, { once: true, margin: '-80px' });
+    const gridRef = useRef(null);
+    const gridInView = useInView(gridRef, { once: true, margin: '-80px' });
 
     const activeType = searchParams.get('type') || '';
     const activeCategory = searchParams.get('category') || '';
@@ -78,25 +84,48 @@ export default function Catalogue() {
     return (
         <div className="w-full min-h-screen bg-bg-primary pt-[64px]">
             {/* Header */}
-            <div className="pt-10 px-5 max-w-7xl mx-auto" data-reveal>
-                <span className="font-body text-[10px] text-gold uppercase tracking-wider block mb-2">COLLECTION</span>
-                <h1 className="font-display text-[36px] font-[500] text-dark leading-none">Notre Catalogue</h1>
-                <div className="w-10 h-[1px] bg-gold my-4"></div>
-                <span className="font-body text-[12px] text-text-sec">
-                    {products.length} pièce{products.length !== 1 ? 's' : ''} disponible{products.length !== 1 ? 's' : ''}
+            <div className="pt-10 px-5 max-w-7xl mx-auto relative overflow-hidden" ref={headerRef}>
+                <span
+                    className="absolute top-0 left-1/2 -translate-x-1/2 font-display font-bold pointer-events-none select-none z-0 whitespace-nowrap"
+                    style={{ fontSize: 'clamp(80px, 12vw, 180px)', color: 'rgba(12,10,9,0.04)' }}
+                >
+                    CATALOGUE
                 </span>
+                <div className="relative z-10">
+                    <motion.span
+                        className="font-body text-[10px] text-gold uppercase tracking-wider block mb-2"
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={headerInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.5 }}
+                    >COLLECTION</motion.span>
+                    <motion.h1
+                        className="font-display text-[36px] font-[500] text-dark leading-none"
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={headerInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                    >Notre Catalogue</motion.h1>
+                    <motion.div
+                        className="h-[1px] bg-gold my-4"
+                        initial={{ width: 0 }}
+                        animate={headerInView ? { width: 40 } : {}}
+                        transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+                    />
+                    <span className="font-body text-[12px] text-text-sec">
+                        {products.length} pièce{products.length !== 1 ? 's' : ''} disponible{products.length !== 1 ? 's' : ''}
+                    </span>
+                </div>
             </div>
 
             {/* Type Toggle Bar */}
-            <div className="px-5 mt-6 max-w-7xl mx-auto" data-reveal>
+            <div className="px-5 mt-6 max-w-7xl mx-auto">
                 <div className="flex gap-0 border border-dark/15 w-fit">
                     {TYPE_TABS.map(tab => (
                         <button
                             key={tab.value}
                             onClick={() => handleTypeChange(tab.value)}
-                            className={`h-10 px-5 font-body text-[10px] tracking-wider uppercase transition-colors ${activeType === tab.value
+                            className={`h-10 px-5 font-body text-[10px] tracking-wider uppercase transition-all duration-200 cursor-pointer select-none active:scale-95 ${activeType === tab.value
                                     ? 'bg-dark text-bg-primary'
-                                    : 'bg-transparent text-dark hover:bg-dark/5'
+                                    : 'bg-transparent text-dark hover:border-gold hover:text-gold'
                                 }`}
                         >
                             {tab.label}
@@ -110,9 +139,9 @@ export default function Catalogue() {
                 <div className="flex gap-2 max-w-7xl mx-auto w-full min-w-max pb-1">
                     <button
                         onClick={() => handleCategoryFilter('')}
-                        className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-colors ${!activeCategory
+                        className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-all duration-200 cursor-pointer select-none active:scale-95 ${!activeCategory
                                 ? 'bg-dark text-bg-primary'
-                                : 'bg-transparent text-dark border border-dark/20 hover:border-dark'
+                                : 'bg-transparent text-dark border border-dark/20 hover:border-gold hover:text-gold'
                             }`}
                     >
                         Toutes
@@ -121,9 +150,9 @@ export default function Catalogue() {
                         <button
                             key={cat._id}
                             onClick={() => handleCategoryFilter(cat.slug)}
-                            className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-colors ${activeCategory === cat.slug
+                            className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-all duration-200 cursor-pointer select-none active:scale-95 ${activeCategory === cat.slug
                                     ? 'bg-dark text-bg-primary'
-                                    : 'bg-transparent text-dark border border-dark/20 hover:border-dark'
+                                    : 'bg-transparent text-dark border border-dark/20 hover:border-gold hover:text-gold'
                                 }`}
                         >
                             {cat.name}
@@ -133,20 +162,37 @@ export default function Catalogue() {
             </div>
 
             {/* Product Grid */}
-            <div className="px-5 py-6 max-w-7xl mx-auto min-h-[50vh]">
+            <div className="px-5 py-6 max-w-7xl mx-auto min-h-[50vh]" ref={gridRef}>
                 {loading ? (
                     <LoadingSpinner />
                 ) : (
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xl:gap-6">
-                        {products.length === 0 && (
-                            <div className="col-span-full text-center py-20 text-text-sec font-body text-[14px]">
-                                Aucun produit dans cette catégorie.
-                            </div>
-                        )}
-                        {products.map(product => (
-                            <ProductCard key={product._id} product={product} />
-                        ))}
-                    </div>
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeCategory + activeType}
+                            className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xl:gap-6"
+                            initial="hidden"
+                            animate={gridInView ? 'visible' : 'hidden'}
+                            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}
+                        >
+                            {products.length === 0 && (
+                                <div className="col-span-full text-center py-20 text-text-sec font-body text-[14px]">
+                                    Aucun produit dans cette catégorie.
+                                </div>
+                            )}
+                            {products.map((product, index) => (
+                                <motion.div
+                                    key={product._id}
+                                    variants={{
+                                        hidden: { opacity: 0, scale: 0.95, y: 16 },
+                                        visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5, delay: index * 0.05 } }
+                                    }}
+                                    layout
+                                >
+                                    <ProductCard product={product} />
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </AnimatePresence>
                 )}
             </div>
         </div>
