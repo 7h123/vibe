@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminGetDevis, adminUpdateDevisStatus } from '../../services/adminApi';
+import { useTranslation } from '../../hooks/useTranslation';
 import { Eye, X } from 'lucide-react';
 
 const STATUS_OPTIONS = [
@@ -11,6 +12,7 @@ const STATUS_OPTIONS = [
 ];
 
 export default function AdminDevis() {
+    const { t } = useTranslation()
     const [devisList, setDevisList] = useState([]);
     const [filter, setFilter] = useState('Toutes');
     const [error, setError] = useState('');
@@ -26,7 +28,7 @@ export default function AdminDevis() {
             const data = Array.isArray(res.data) ? res.data : [];
             setDevisList(data.sort((a, b) => new Date(b.createdAt ?? 0) - new Date(a.createdAt ?? 0)));
         } catch (err) {
-            setError('Erreur lors du chargement des devis');
+            setError(t('admin.devisPage.loadError'));
         } finally {
             setLoading(false);
         }
@@ -58,7 +60,7 @@ export default function AdminDevis() {
                 setDetailModal(prev => ({ ...prev, status: res.data.status }));
             }
         } catch (err) {
-            setError('Erreur lors de la mise à jour du statut');
+            setError(t('admin.devisPage.updateError'));
         } finally {
             setTimeout(() => setStatusUpdating(null), 600);
         }
@@ -71,8 +73,8 @@ export default function AdminDevis() {
     return (
         <div className="p-8 pb-32 min-h-screen relative">
             <div className="flex justify-between items-center mb-8">
-                <h1 className="font-display text-[28px] text-dark">Devis Sur Mesure</h1>
-                <span className="font-body text-[12px] text-text-sec">{devisList.length} devis au total</span>
+                <h1 className="font-display text-[28px] text-dark">{t('admin.devisPage.title')}</h1>
+                <span className="font-body text-[12px] text-text-sec">{devisList.length} {t('admin.devisPage.totalCount')}</span>
             </div>
 
             {error && <p className="font-body text-[12px] text-red-500 mb-4">{error}</p>}
@@ -88,7 +90,7 @@ export default function AdminDevis() {
                             : 'bg-transparent text-text-sec border-dark/20 hover:border-dark/40'
                             }`}
                     >
-                        {s === 'Toutes' ? `Toutes (${devisList.length})` : `${s} (${devisList.filter(d => (d.status ?? 'new') === s).length})`}
+                        {s === 'Toutes' ? `${t('admin.devisPage.allFilter')} (${devisList.length})` : `${s} (${devisList.filter(d => (d.status ?? 'new') === s).length})`}
                     </button>
                 ))}
             </div>
@@ -102,7 +104,7 @@ export default function AdminDevis() {
                     <table className="w-full text-left">
                         <thead>
                             <tr className="border-b border-dark/10">
-                                {['NOM CLIENT', 'TÉLÉPHONE', 'EMAIL', 'TYPE', 'MATÉRIAU', 'BUDGET', 'STATUT', 'DATE', 'ACTIONS'].map(h => (
+                                {[t('admin.table.customerName'), t('admin.table.phone'), t('admin.table.email'), t('admin.devisPage.type'), t('form.material'), t('admin.devisPage.budget'), t('admin.table.status'), t('admin.table.date'), t('admin.table.actions')].map(h => (
                                     <th key={h} className="font-body text-[9px] tracking-[0.15em] uppercase text-text-sec py-4 px-4 whitespace-nowrap">{h}</th>
                                 ))}
                             </tr>
@@ -148,7 +150,7 @@ export default function AdminDevis() {
                         </tbody>
                     </table>
                     {filtered.length === 0 && (
-                        <p className="p-8 text-center font-body text-sm text-text-sec">Aucun devis trouvé pour ce statut.</p>
+                        <p className="p-8 text-center font-body text-sm text-text-sec">{t('admin.devisPage.noDevis')}</p>
                     )}
                 </div>
             )}
@@ -158,40 +160,40 @@ export default function AdminDevis() {
                 <div className="fixed inset-0 bg-dark/60 z-50 flex items-center justify-center p-5" onClick={() => setDetailModal(null)}>
                     <div className="bg-bg-secondary w-full max-w-[640px] p-10 relative max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                         <button onClick={() => setDetailModal(null)} className="absolute top-6 right-6 text-dark hover:text-gold transition-colors"><X size={20} /></button>
-                        <h2 className="font-display text-[22px] text-dark mb-2">DÉTAILS DU DEVIS</h2>
-                        <p className="font-body text-[11px] text-text-sec mb-8">Soumis le {formatDate(detailModal.createdAt)}</p>
+                        <h2 className="font-display text-[22px] text-dark mb-2">{t('admin.devisPage.detailsTitle')}</h2>
+                        <p className="font-body text-[11px] text-text-sec mb-8">{t('admin.devisPage.submittedDate')} {formatDate(detailModal.createdAt)}</p>
 
                         <div className="grid grid-cols-2 gap-x-8 gap-y-5">
                             <div>
-                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">Nom du client</p>
+                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">{t('admin.devisPage.customerName')}</p>
                                 <p className="font-body text-[14px] text-dark font-medium">{detailModal.customer?.name ?? 'N/A'}</p>
                             </div>
                             <div>
-                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">Téléphone</p>
+                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">{t('admin.table.phone')}</p>
                                 <p className="font-body text-[14px] text-dark">{detailModal.customer?.phone ?? 'N/A'}</p>
                             </div>
                             <div>
-                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">Email</p>
+                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">{t('admin.table.email')}</p>
                                 <p className="font-body text-[14px] text-dark">{detailModal.customer?.email ?? 'N/A'}</p>
                             </div>
                             <div>
-                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">Type de pièce</p>
+                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">{t('admin.devisPage.type')}</p>
                                 <p className="font-body text-[14px] text-dark">{detailModal.type ?? 'N/A'}</p>
                             </div>
                             <div>
-                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">Matériau</p>
+                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">{t('form.material')}</p>
                                 <p className="font-body text-[14px] text-dark">{detailModal.material ?? 'N/A'}</p>
                             </div>
                             <div>
-                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">Dimensions</p>
-                                <p className="font-body text-[14px] text-dark">{detailModal.dimensions ?? 'Non spécifiées'}</p>
+                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">{t('admin.devisPage.dimensions')}</p>
+                                <p className="font-body text-[14px] text-dark">{detailModal.dimensions ?? t('admin.devisPage.notSpecified')}</p>
                             </div>
                             <div>
-                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">Budget</p>
-                                <p className="font-body text-[14px] text-gold font-medium">{detailModal.budget ?? 'Non spécifié'}</p>
+                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">{t('admin.devisPage.budget')}</p>
+                                <p className="font-body text-[14px] text-gold font-medium">{detailModal.budget ?? t('admin.devisPage.notSpecified')}</p>
                             </div>
                             <div>
-                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">Statut</p>
+                                <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">{t('admin.table.status')}</p>
                                 <select
                                     value={detailModal.status ?? 'new'}
                                     onChange={(e) => handleStatusChange(detailModal._id, e.target.value)}
@@ -205,8 +207,8 @@ export default function AdminDevis() {
                         </div>
 
                         <div className="mt-6">
-                            <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">Description complète</p>
-                            <p className="font-body text-[14px] text-dark leading-[1.7]">{detailModal.description ?? 'Aucune description'}</p>
+                            <p className="font-body text-[10px] tracking-[0.15em] text-text-sec uppercase mb-1">{t('admin.form.fullDescription')}</p>
+                            <p className="font-body text-[14px] text-dark leading-[1.7]">{detailModal.description ?? t('admin.devis.noDescription')}</p>
                         </div>
 
                         <div className="flex gap-3 mt-8">
@@ -215,22 +217,22 @@ export default function AdminDevis() {
                                     type="button"
                                     onClick={() => {
                                         const phone = detailModal.customer?.phone?.replace(/\s/g, '').replace(/^0/, '212') || '';
-                                        const text = `Bonjour ${detailModal.customer?.name || ''}, nous avons reçu votre demande de devis pour ${detailModal.type || ''} en ${detailModal.material || ''}. Nous revenons vers vous très prochainement. - Équipe Nova Design`;
+                                        const text = `${t('admin.devis.whatsappMessage')}`;
                                         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
                                     }}
                                     className="flex-1 inline-flex items-center justify-center h-[40px] bg-green-500 text-white font-body text-[10px] tracking-wider uppercase hover:bg-green-600 transition-colors"
                                 >
-                                    CONTACTER VIA WHATSAPP
+                                    {t('admin.devis.contactViaWhatsapp')}
                                 </button>
                             )}
                             {detailModal.customer?.email && (
                                 <a
-                                    href={`mailto:${detailModal.customer.email}?subject=${encodeURIComponent('Votre devis Nova Design')}&body=${encodeURIComponent(
-                                        `Bonjour ${detailModal.customer?.name || ''},\n\nNous avons bien reçu votre demande de devis pour ${detailModal.type || ''} en ${detailModal.material || ''}.\n\nNous revenons vers vous très prochainement.\n\nCordialement,\nL'équipe Nova Design`
+                                    href={`mailto:${detailModal.customer.email}?subject=${encodeURIComponent(t('admin.devis.emailSubject'))}&body=${encodeURIComponent(
+                                        `${t('admin.devis.emailBody')}`
                                     )}`}
                                     className="flex-1 inline-flex items-center justify-center h-[40px] bg-dark text-cream font-body text-[10px] tracking-wider uppercase hover:bg-dark/80 transition-colors"
                                 >
-                                    ENVOYER UN EMAIL
+                                    {t('admin.devis.sendEmail')}
                                 </a>
                             )}
                         </div>

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
 import { adminGetOrders, adminUpdateOrder } from '../../services/adminApi';
+import { useTranslation } from '../../hooks/useTranslation';
 
 export default function AdminOrders() {
+    const { t } = useTranslation()
     const [orders, setOrders] = useState([]);
     const [filter, setFilter] = useState('Toutes');
     const [expandedRow, setExpandedRow] = useState(null);
@@ -13,7 +15,7 @@ export default function AdminOrders() {
             const res = await adminGetOrders();
             setOrders(res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
         } catch (err) {
-            setError('Erreur lors du chargement des commandes');
+            setError(t('admin.orderPage.loadError'));
         }
     };
 
@@ -22,6 +24,19 @@ export default function AdminOrders() {
     }, []);
 
     const statuses = ['Toutes', 'pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
+
+    const getStatusLabel = (status) => {
+        const statusMap = {
+            'Toutes': 'Toutes',
+            'pending': t('admin.orderStatus.pending'),
+            'confirmed': t('admin.orderStatus.confirmed'),
+            'processing': t('admin.orderStatus.processing'),
+            'shipped': t('admin.orderStatus.shipped'),
+            'delivered': t('admin.orderStatus.delivered'),
+            'cancelled': t('admin.orderStatus.cancelled'),
+        };
+        return statusMap[status] || status;
+    };
 
     const getStatusColor = (status) => {
         switch (status) {
@@ -40,7 +55,7 @@ export default function AdminOrders() {
             await adminUpdateOrder(id, { status: newStatus });
             fetchOrders();
         } catch (err) {
-            setError('Erreur lors de la mise à jour du statut');
+            setError(t('admin.orderPage.updateError'));
         }
     };
 
@@ -49,7 +64,7 @@ export default function AdminOrders() {
     return (
         <div className="p-8 pb-32 min-h-screen relative">
             <div className="flex justify-between items-center mb-8">
-                <h1 className="font-display text-[28px] text-dark">Commandes</h1>
+                <h1 className="font-display text-[28px] text-dark">{t('admin.orderPage.title')}</h1>
             </div>
 
             {error && <p className="font-body text-[12px] text-red-500 mb-4">{error}</p>}
@@ -62,7 +77,7 @@ export default function AdminOrders() {
                         onClick={() => setFilter(s)}
                         className={`font-body text-[10px] tracking-wider uppercase px-4 py-2 border ${filter === s ? 'bg-dark text-cream border-dark' : 'bg-transparent text-text-sec border-dark/20'}`}
                     >
-                        {s}
+                        {getStatusLabel(s)}
                     </button>
                 ))}
             </div>
@@ -71,7 +86,7 @@ export default function AdminOrders() {
                 <table className="w-full text-left">
                     <thead>
                         <tr className="border-b border-dark/10">
-                            {['#', 'CLIENT', 'TÉLÉPHONE', 'VILLE', 'ARTICLES', 'TOTAL', 'STATUT', 'DATE'].map(h => (
+                            {[t('admin.table.id'), t('admin.table.customer'), t('admin.table.phone'), t('admin.table.city'), t('admin.table.articles'), t('admin.table.total'), t('admin.table.status'), t('admin.table.date')].map(h => (
                                 <th key={h} className="font-body text-[9px] tracking-[0.15em] uppercase text-text-sec py-4 px-4 whitespace-nowrap">{h}</th>
                             ))}
                         </tr>
@@ -96,7 +111,7 @@ export default function AdminOrders() {
                                             className={`font-body text-[9px] tracking-wider uppercase px-2 py-1 outline-none cursor-pointer appearance-none ${getStatusColor(order.status)}`}
                                         >
                                             {statuses.filter(s => s !== 'Toutes').map(s => (
-                                                <option key={s} value={s}>{s}</option>
+                                                <option key={s} value={s}>{getStatusLabel(s)}</option>
                                             ))}
                                         </select>
                                     </td>
@@ -110,14 +125,14 @@ export default function AdminOrders() {
                                         <td colSpan="8" className="p-6">
                                             <div className="flex flex-col gap-6">
                                                 <div>
-                                                    <p className="font-body text-[10px] tracking-[0.1em] text-text-sec uppercase mb-3">Informations Client</p>
+                                                    <p className="font-body text-[10px] tracking-[0.1em] text-text-sec uppercase mb-3">{t('admin.orderPage.customerInfo')}</p>
                                                     <p className="font-body text-[13px] text-dark mb-1">{order.customer?.address}</p>
                                                     {order.customer?.message && (
                                                         <p className="font-body text-[12px] text-text-sec italic border-l-2 border-gold pl-3 mt-2">"{order.customer?.message}"</p>
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <p className="font-body text-[10px] tracking-[0.1em] text-text-sec uppercase mb-3">Articles Commandés</p>
+                                                    <p className="font-body text-[10px] tracking-[0.1em] text-text-sec uppercase mb-3">{t('admin.orderPage.itemsOrdered')}</p>
                                                     <div className="flex flex-col gap-3">
                                                         {order.items.map((item, idx) => (
                                                             <div key={idx} className="flex items-center gap-4">
@@ -139,7 +154,7 @@ export default function AdminOrders() {
                     </tbody>
                 </table>
                 {filtered.length === 0 && (
-                    <p className="p-8 text-center font-body text-sm text-text-sec">Aucune commande trouvée.</p>
+                    <p className="p-8 text-center font-body text-sm text-text-sec">{t('admin.orderPage.noOrders')}</p>
                 )}
             </div>
         </div>

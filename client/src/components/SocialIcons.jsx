@@ -1,4 +1,5 @@
 import { Instagram, Facebook } from 'lucide-react';
+import { useTranslation } from '../hooks/useTranslation';
 
 const WhatsAppIcon = () => (
     <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
@@ -6,22 +7,24 @@ const WhatsAppIcon = () => (
     </svg>
 );
 
-const socialLinks = [
-    { href: 'https://www.instagram.com/novadesign.maa', icon: <Instagram size={20} />, label: 'Instagram' },
-    { href: 'https://facebook.com', icon: <Facebook size={20} />, label: 'Facebook' },
-    { href: 'https://wa.me/212649668465', icon: <WhatsAppIcon />, label: 'WhatsApp' },
-];
-
 export default function SocialIcons() {
+    const { t } = useTranslation();
+    
+    const socialLinks = [
+        { href: 'https://www.instagram.com/novadesign.maa', icon: <Instagram size={20} />, labelKey: 'Instagram' },
+        { href: 'https://facebook.com', icon: <Facebook size={20} />, labelKey: 'Facebook' },
+        { href: 'https://wa.me/212649668465', icon: <WhatsAppIcon />, labelKey: 'WhatsApp' },
+    ];
+
     return (
         <div className="flex items-center justify-center gap-4">
             {socialLinks.map((link) => (
                 <a
-                    key={link.label}
+                    key={link.labelKey}
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={link.label}
+                    aria-label={link.labelKey}
                     className="w-[44px] h-[44px] rounded-full flex items-center justify-center text-white transition-all duration-200"
                     style={{
                         background: '#1a1a1a',

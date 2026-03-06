@@ -1,13 +1,16 @@
+import { useTranslation } from '../hooks/useTranslation';
+
 export default function Marquee() {
+    const { t } = useTranslation();
     const items = [
-        'FAÇONNÉ À LA MAIN',
-        'PIÈCES UNIQUES',
-        'MARBRE',
-        'TRAVERTIN',
-        'GRANIT',
-        'FAIT AU MAROC',
-        'SUR MESURE',
-        'LIVRAISON MAROC',
+        t('marquee.handmade'),
+        t('marquee.unique'),
+        t('marquee.marble'),
+        t('marquee.travertin'),
+        t('marquee.granite'),
+        t('marquee.madeinMaroc'),
+        t('marquee.custom'),
+        t('marquee.delivery'),
     ];
 
     // Exactly 2 copies for seamless infinite loop: when first half scrolls out, second half is identical

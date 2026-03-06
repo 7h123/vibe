@@ -18,7 +18,7 @@ const AdminSchema = new mongoose.Schema({
   name:     { type: String, default: 'Nova Admin' }
 }, { timestamps: true });
 
-// Mongoose 6+ — async hooks don't take next()
+
 AdminSchema.pre('save', async function () {
   if (!this.isModified('password')) return;
   if (this.password.startsWith('$2a$') ||
