@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { submitContact } from '../services/api';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { Phone, Mail, MapPin, Instagram } from 'lucide-react';
 
 export default function Contact() {
     useScrollReveal();
+    const headerRef = useRef(null);
+    const headerInView = useInView(headerRef, { once: true, margin: '-80px' });
+    const cardsRef = useRef(null);
+    const cardsInView = useInView(cardsRef, { once: true, margin: '-80px' });
+    const formRef = useRef(null);
+    const formInView = useInView(formRef, { once: true, margin: '-80px' });
+
     const [formData, setFormData] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
     const [status, setStatus] = useState('idle');
 
@@ -25,43 +33,76 @@ export default function Contact() {
 
     return (
         <div className="w-full bg-bg-primary pt-[64px] min-h-screen">
-            <div className="pt-20 px-5 max-w-7xl mx-auto pb-16" data-reveal>
-                <span className="font-body text-[10px] text-gold uppercase tracking-wider block mb-2">CONTACT</span>
-                <h1 className="font-display text-[36px] text-dark leading-none">Parlons de Votre Projet</h1>
-                <div className="w-10 h-[1px] bg-gold my-4"></div>
+            <div className="pt-20 px-5 max-w-7xl mx-auto pb-16" ref={headerRef}>
+                <motion.span
+                    className="font-body text-[10px] text-gold uppercase tracking-wider block mb-2"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={headerInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5 }}
+                >CONTACT</motion.span>
+                <motion.h1
+                    className="font-display text-[36px] text-dark leading-none"
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={headerInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                >Parlons de Votre Projet</motion.h1>
+                <motion.div
+                    className="h-[1px] bg-gold my-4"
+                    initial={{ width: 0 }}
+                    animate={headerInView ? { width: 40 } : {}}
+                    transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+                />
             </div>
 
             <div className="max-w-7xl mx-auto px-5 flex flex-col xl:flex-row gap-10 xl:gap-20">
 
                 {/* Contact info cards */}
-                <div className="w-full xl:w-5/12" data-reveal>
+                <div className="w-full xl:w-5/12" ref={cardsRef}>
                     <div className="flex flex-col gap-4">
 
-                        <a href="https://wa.me/212649668465" target="_blank" rel="noreferrer" className="group bg-bg-secondary p-6 border-l-[3px] border-gold hover:bg-bg-primary transition-colors">
-                            <Phone size={24} className="text-gold mb-3" strokeWidth={1.5} />
-                            <h3 className="font-display text-[18px] text-dark mb-1">WhatsApp / Téléphone</h3>
-                            <p className="font-body text-[12px] text-text-sec mb-4">0649668465</p>
-                            <span className="font-body text-[11px] text-gold tracking-wider uppercase group-hover:underline underline-offset-4">ENVOYER &rarr;</span>
-                        </a>
-
-                        <a href="https://instagram.com/novadesign.maa" target="_blank" rel="noreferrer" className="group bg-bg-secondary p-6 border-l-[3px] border-gold hover:bg-bg-primary transition-colors">
-                            <Instagram size={24} className="text-gold mb-3" strokeWidth={1.5} />
-                            <h3 className="font-display text-[18px] text-dark mb-1">Instagram</h3>
-                            <p className="font-body text-[12px] text-text-sec mb-4">@novadesign.maa</p>
-                            <span className="font-body text-[11px] text-gold tracking-wider uppercase group-hover:underline underline-offset-4">ENVOYER &rarr;</span>
-                        </a>
-
-                        <div className="bg-bg-secondary p-6 border-l-[3px] border-gold">
-                            <MapPin size={24} className="text-gold mb-3" strokeWidth={1.5} />
-                            <h3 className="font-display text-[18px] text-dark mb-1">Atelier</h3>
-                            <p className="font-body text-[12px] text-text-sec mb-4">Maroc<br />(Sur rendez-vous uniquement)</p>
-                        </div>
+                        {[
+                            { href: 'https://wa.me/212649668465', icon: Phone, title: 'WhatsApp / Téléphone', desc: '0649668465', cta: 'ENVOYER', isLink: true },
+                            { href: 'https://instagram.com/novadesign.maa', icon: Instagram, title: 'Instagram', desc: '@novadesign.maa', cta: 'ENVOYER', isLink: true },
+                            { href: null, icon: MapPin, title: 'Atelier', desc: 'Maroc\n(Sur rendez-vous uniquement)', cta: null, isLink: false },
+                        ].map((card, i) => {
+                            const Icon = card.icon;
+                            const content = (
+                                <motion.div
+                                    key={card.title}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={cardsInView ? { opacity: 1, x: 0 } : {}}
+                                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                                >
+                                    {card.isLink ? (
+                                        <a href={card.href} target="_blank" rel="noreferrer" className="group bg-bg-secondary p-6 border-l-[3px] border-gold hover:translate-x-1 transition-transform duration-200 block">
+                                            <Icon size={24} className="text-gold mb-3" strokeWidth={1.5} />
+                                            <h3 className="font-display text-[18px] text-dark mb-1">{card.title}</h3>
+                                            <p className="font-body text-[12px] text-text-sec mb-4">{card.desc}</p>
+                                            <span className="font-body text-[11px] text-gold tracking-wider uppercase group-hover:tracking-[0.3em] transition-all duration-300">{card.cta} &rarr;</span>
+                                        </a>
+                                    ) : (
+                                        <div className="bg-bg-secondary p-6 border-l-[3px] border-gold">
+                                            <Icon size={24} className="text-gold mb-3" strokeWidth={1.5} />
+                                            <h3 className="font-display text-[18px] text-dark mb-1">{card.title}</h3>
+                                            <p className="font-body text-[12px] text-text-sec mb-4">Maroc<br />(Sur rendez-vous uniquement)</p>
+                                        </div>
+                                    )}
+                                </motion.div>
+                            );
+                            return content;
+                        })}
 
                     </div>
                 </div>
 
                 {/* Contact Form */}
-                <div className="w-full xl:w-7/12" data-reveal>
+                <motion.div
+                    className="w-full xl:w-7/12"
+                    ref={formRef}
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={formInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6 }}
+                >
                     <div className="bg-bg-secondary p-6 xl:p-10 border border-gold/15 relative">
                         {status === 'success' ? (
                             <div className="text-center py-20">
@@ -103,18 +144,18 @@ export default function Contact() {
                                 <button
                                     type="submit"
                                     disabled={status === 'loading'}
-                                    className="w-full h-[52px] bg-dark text-bg-primary font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-2"
+                                    className="w-full h-[52px] bg-dark text-bg-primary font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-2 hover:bg-gold hover:text-obsidian transition-all duration-250 cursor-pointer select-none active:scale-[0.97]"
                                 >
                                     {status === 'loading' ? 'ENVOI...' : 'ENVOYER LE MESSAGE'}
                                 </button>
                             </form>
                         )}
                     </div>
-                </div>
+                </motion.div>
             </div>
 
             {/* OpenStreetMap */}
-            <div className="w-full mt-20 px-5 max-w-7xl mx-auto" data-reveal>
+            <div className="w-full mt-20 px-5 max-w-7xl mx-auto">
                 <div className="rounded-lg overflow-hidden border border-dark/10 shadow-sm leading-none flex">
                     <iframe
                         src="https://www.openstreetmap.org/export/embed.html?bbox=-7.6898,33.5731,-7.5498,33.6131&amp;layer=mapnik"

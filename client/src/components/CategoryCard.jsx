@@ -32,7 +32,7 @@ export default function CategoryCard({ category }) {
                     <img
                         src={imageUrl}
                         alt={category.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"
                         loading="lazy"
                         decoding="async"
                         width={800}
@@ -41,8 +41,16 @@ export default function CategoryCard({ category }) {
                 )}
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+
+            {/* Gold corner brackets */}
+            <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+            <div className="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+
             <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
                 <h3 className="font-display text-[16px] font-[500] text-bg-primary tracking-[0.1em]">{category.name}</h3>
+                <span className="font-body text-[10px] tracking-[0.15em] uppercase text-cream opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
+                    Découvrir →
+                </span>
             </div>
         </Link>
     );

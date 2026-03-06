@@ -1,34 +1,69 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag, Menu, Sun, Moon } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { CartContext } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
 import MobileMenu from './MobileMenu';
 
+const navLinks = [
+    { to: '/', label: 'Accueil' },
+    { to: '/catalogue', label: 'Catalogue' },
+    { to: '/a-propos', label: 'À Propos' },
+    { to: '/sur-mesure', label: 'Sur Mesure' },
+    { to: '/contact', label: 'Contact' },
+];
+
 export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const { cartCount } = useContext(CartContext);
     const { theme, toggleTheme } = useTheme();
 
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 50);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
     return (
         <>
-            <nav className="fixed top-0 left-0 w-full h-[64px] backdrop-blur-[8px] z-50 flex items-center justify-between px-5" style={{ backgroundColor: 'var(--navbar-bg)' }}>
-                <div className="flex flex-col">
+            <nav
+                className="fixed top-0 left-0 w-full h-[64px] z-50 flex items-center justify-between px-5"
+                style={{
+                    backgroundColor: scrolled ? 'var(--navbar-bg)' : 'transparent',
+                    backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+                    borderBottom: scrolled ? '1px solid rgba(200,169,110,0.15)' : '1px solid transparent',
+                    transition: 'all 0.35s ease',
+                }}
+            >
+                <motion.div
+                    className="flex flex-col"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                >
                     <Link to="/" className="font-display font-bold text-[22px] text-dark tracking-[0.25em] leading-none">NOVA</Link>
                     <span className="font-body text-[9px] text-gold tracking-[0.4em] block -mt-[2px]">DESIGN</span>
                     <div className="w-full h-[1px] bg-gold opacity-50 mt-1"></div>
-                </div>
+                </motion.div>
 
                 {/* Desktop Links */}
                 <div className="hidden xl:flex items-center gap-10 font-body text-[11px] font-[500] tracking-wider uppercase text-dark">
-                    <Link to="/">Accueil</Link>
-                    <Link to="/catalogue">Catalogue</Link>
-                    <Link to="/a-propos">À Propos</Link>
-                    <Link to="/sur-mesure">Sur Mesure</Link>
-                    <Link to="/contact">Contact</Link>
+                    {navLinks.map((link) => (
+                        <Link key={link.to} to={link.to} className="relative group py-1">
+                            {link.label}
+                            <span className="absolute bottom-0 left-0 h-px bg-gold w-0 group-hover:w-full transition-all duration-300 ease-out" />
+                        </Link>
+                    ))}
                 </div>
 
-                <div className="flex items-center gap-3">
+                <motion.div
+                    className="flex items-center gap-3"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                >
                     <button
                         type="button"
                         onClick={toggleTheme}
@@ -40,13 +75,18 @@ export default function Navbar() {
                     <Link to="/panier" className="relative">
                         <ShoppingBag size={20} className="text-dark" strokeWidth={1.5} />
                         {cartCount > 0 && (
-                            <span className="absolute -top-1 -right-2 bg-gold text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
+                            <motion.span
+                                className="absolute -top-1 -right-2 bg-gold text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center"
+                                initial={{ scale: 0 }}
+                                animate={{ scale: [1, 1.3, 1] }}
+                                transition={{ duration: 0.4 }}
+                                key={cartCount}
+                            >
                                 {cartCount}
-                            </span>
+                            </motion.span>
                         )}
                     </Link>
                     <a href="https://wa.me/212649668465" target="_blank" rel="noreferrer" className="text-gold">
-                        {/* simple WhatsApp svg icon */}
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51h-.57c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                         </svg>
@@ -54,7 +94,7 @@ export default function Navbar() {
                     <button className="xl:hidden" onClick={() => setIsMobileMenuOpen(true)}>
                         <Menu size={20} className="text-dark" strokeWidth={1.5} />
                     </button>
-                </div>
+                </motion.div>
             </nav>
             <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
         </>
