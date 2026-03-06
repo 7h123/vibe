@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <!-- Background mimicking the marble texture lightly -->
+  <rect width="1200" height="630" fill="#F5F2ED" />
+  <rect width="1200" height="630" fill="url(#marble-texture)" opacity="0.3" />
+  
+  <text x="50%" y="48%" font-family="Bodoni Moda, serif" font-size="160" fill="#8B7355" text-anchor="middle" letter-spacing="20">NOVA DESIGN</text>
+  <text x="50%" y="65%" font-family="DM Sans, sans-serif" font-size="32" fill="#666666" text-anchor="middle" letter-spacing="12" font-weight="600" text-transform="uppercase">Premium Marble and Travertine</text>
+  
+  <defs>
+    <radialGradient id="marble-texture" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#e8e4dc" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>

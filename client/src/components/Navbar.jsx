@@ -3,37 +3,41 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag, Menu, Sun, Moon } from 'lucide-react';
 import { CartContext } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
+import { useTranslation } from '../hooks/useTranslation';
+import LanguageSwitcher from './LanguageSwitcher';
 import MobileMenu from './MobileMenu';
 
 export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { cartCount } = useContext(CartContext);
     const { theme, toggleTheme } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <>
-            <nav className="fixed top-0 left-0 w-full h-[64px] backdrop-blur-[8px] z-50 flex items-center justify-between px-5" style={{ backgroundColor: 'var(--navbar-bg)' }}>
+            <nav className="fixed top-0 left-0 w-full h-[64px] backdrop-blur-[12px] z-50 flex items-center justify-between px-5 border-b" style={{ backgroundColor: 'var(--navbar-bg)', borderColor: 'var(--border)' }}>
                 <div className="flex flex-col">
-                    <Link to="/" className="font-display font-bold text-[22px] text-dark tracking-[0.25em] leading-none">NOVA</Link>
-                    <span className="font-body text-[9px] text-gold tracking-[0.4em] block -mt-[2px]">DESIGN</span>
+                    <Link to="/" className="font-display font-bold text-[22px] text-dark tracking-[0.25em] leading-none">{t('brand.nova')}</Link>
+                    <span className="font-body text-[9px] text-gold tracking-[0.4em] block -mt-[2px]">{t('brand.design')}</span>
                     <div className="w-full h-[1px] bg-gold opacity-50 mt-1"></div>
                 </div>
 
                 {/* Desktop Links */}
-                <div className="hidden xl:flex items-center gap-10 font-body text-[11px] font-[500] tracking-wider uppercase text-dark">
-                    <Link to="/">Accueil</Link>
-                    <Link to="/catalogue">Catalogue</Link>
-                    <Link to="/a-propos">À Propos</Link>
-                    <Link to="/sur-mesure">Sur Mesure</Link>
-                    <Link to="/contact">Contact</Link>
+                <div className="hidden xl:flex items-center gap-10 font-body text-[12px] font-[500] tracking-wider uppercase text-dark">
+                    <Link to="/" className="nav-link-luxury">{t('nav.accueil')}</Link>
+                    <Link to="/catalogue" className="nav-link-luxury">{t('nav.catalogue')}</Link>
+                    <Link to="/a-propos" className="nav-link-luxury">{t('nav.apropos')}</Link>
+                    <Link to="/sur-mesure" className="nav-link-luxury">{t('nav.surMesure')}</Link>
+                    <Link to="/contact" className="nav-link-luxury">{t('nav.contact')}</Link>
                 </div>
 
                 <div className="flex items-center gap-3">
+                    <LanguageSwitcher />
                     <button
                         type="button"
                         onClick={toggleTheme}
                         className="w-9 h-9 rounded-full flex items-center justify-center border border-gold/30 text-gold hover:bg-gold/10 transition-colors"
-                        title={theme === 'light' ? 'Mode sombre' : 'Mode clair'}
+                        title={theme === 'light' ? t('nav.modeSource') : t('nav.modeClaire')}
                     >
                         {theme === 'light' ? <Moon size={18} strokeWidth={1.5} /> : <Sun size={18} strokeWidth={1.5} />}
                     </button>

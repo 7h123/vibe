@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from '../../hooks/useTranslation'
 import { adminGetProducts, adminGetCategories, adminGetOrders, adminGetDevis } from '../../services/adminApi'
 import { Package, Grid3X3, ShoppingCart, FileText } from 'lucide-react'
 
 export default function AdminDashboard() {
+    const { t } = useTranslation()
     const [stats, setStats] = useState({ products: 0, categories: 0, orders: 0, devis: 0 })
     const [orders, setOrders] = useState([])
 
@@ -24,16 +26,16 @@ export default function AdminDashboard() {
     }, [])
 
     const cards = [
-        { label: 'PRODUITS', value: stats.products, icon: Package },
-        { label: 'CATÉGORIES', value: stats.categories, icon: Grid3X3 },
-        { label: 'COMMANDES', value: stats.orders, icon: ShoppingCart },
-        { label: 'DEVIS EN ATTENTE', value: stats.devis, icon: FileText },
+        { label: t('admin.products'), value: stats.products, icon: Package },
+        { label: t('admin.categories'), value: stats.categories, icon: Grid3X3 },
+        { label: t('admin.orders'), value: stats.orders, icon: ShoppingCart },
+        { label: t('admin.pendingDevis'), value: stats.devis, icon: FileText },
     ]
 
     return (
         <div className="p-8">
-            <p className="font-body text-[10px] tracking-[0.2em] uppercase text-gold mb-1">ADMIN</p>
-            <h1 className="font-display text-[28px] text-dark mb-8">Tableau de Bord</h1>
+            <p className="font-body text-[10px] tracking-[0.2em] uppercase text-gold mb-1">{t('admin.tag')}</p>
+            <h1 className="font-display text-[28px] text-dark mb-8">{t('admin.dashboard.title')}</h1>
 
             {/* Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
@@ -48,14 +50,14 @@ export default function AdminDashboard() {
 
             {/* Recent Orders */}
             <div className="bg-bg-secondary p-6">
-                <h2 className="font-display text-[18px] text-dark mb-4">Commandes Récentes</h2>
+                <h2 className="font-display text-[18px] text-dark mb-4">{t('admin.recentOrders')}</h2>
                 {orders.length === 0 ? (
-                    <p className="font-body text-sm text-text-sec">Aucune commande pour l'instant.</p>
+                    <p className="font-body text-sm text-text-sec">{t('admin.noOrders')}</p>
                 ) : (
                     <table className="w-full">
                         <thead>
                             <tr className="border-b border-dark/10">
-                                {['NOM', 'TÉLÉPHONE', 'TOTAL', 'STATUT', 'DATE'].map(h => (
+                                {[t('admin.table.name'), t('admin.table.phone'), t('admin.table.total'), t('admin.table.status'), t('admin.table.date')].map(h => (
                                     <th key={h} className="text-left font-body text-[9px] tracking-[0.15em] 
                                           uppercase text-text-sec pb-3 pr-4">{h}</th>
                                 ))}

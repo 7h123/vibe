@@ -24,7 +24,7 @@ export default function CategoryCard({ category }) {
     return (
         <Link
             to={`/catalogue?category=${category.slug}`}
-            className="relative block w-full aspect-square overflow-hidden group border border-transparent hover:border-gold/50 transition-colors duration-300"
+            className="relative block w-full aspect-square overflow-hidden group border border-transparent hover:border-gold transition-all duration-300 shadow-sm hover:shadow-lg"
             data-reveal
         >
             <div className="absolute inset-0 bg-bg-secondary">
@@ -40,9 +40,10 @@ export default function CategoryCard({ category }) {
                     />
                 )}
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
             <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-                <h3 className="font-display text-[16px] font-[500] text-bg-primary tracking-[0.1em]">{category.name}</h3>
+                <h3 className="font-display text-[16px] font-[600] text-white tracking-[0.1em] drop-shadow-md">{category.name}</h3>
+                <span className="font-body text-[9px] text-white/80 tracking-[0.15em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">VOIR &rarr;</span>
             </div>
         </Link>
     );

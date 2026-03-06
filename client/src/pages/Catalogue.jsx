@@ -2,21 +2,23 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getProducts, getCategories } from '../services/api';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useTranslation } from '../hooks/useTranslation';
 import ProductCard from '../components/ProductCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-const TYPE_TABS = [
-    { label: 'TOUT', value: '' },
-    { label: 'DÉCORATION ARTISANALE', value: 'decoration' },
-    { label: 'MARBRE & PIERRE', value: 'marbre' },
-];
-
 export default function Catalogue() {
     useScrollReveal();
+    const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const TYPE_TABS = [
+        { label: t('catalogue.tabs.all'), value: '' },
+        { label: t('catalogue.tabs.decoration'), value: 'decoration' },
+        { label: t('catalogue.tabs.marble'), value: 'marbre' },
+    ];
 
     const activeType = searchParams.get('type') || '';
     const activeCategory = searchParams.get('category') || '';
@@ -79,24 +81,24 @@ export default function Catalogue() {
         <div className="w-full min-h-screen bg-bg-primary pt-[64px]">
             {/* Header */}
             <div className="pt-10 px-5 max-w-7xl mx-auto" data-reveal>
-                <span className="font-body text-[10px] text-gold uppercase tracking-wider block mb-2">COLLECTION</span>
-                <h1 className="font-display text-[36px] font-[500] text-dark leading-none">Notre Catalogue</h1>
+                <span className="font-body text-[10px] text-gold uppercase tracking-wider block mb-2">{t('catalogue.tag')}</span>
+                <h1 className="font-display text-[36px] font-[500] text-dark leading-none">{t('catalogue.titre')}</h1>
                 <div className="w-10 h-[1px] bg-gold my-4"></div>
                 <span className="font-body text-[12px] text-text-sec">
-                    {products.length} pièce{products.length !== 1 ? 's' : ''} disponible{products.length !== 1 ? 's' : ''}
+                    {products.length} {products.length !== 1 ? t('catalogue.itemsCount').split('{')[1]?.match(/\w+/)?.[0] : 'pièce'} {t('catalogue.itemsCount').includes('disponible') ? t('catalogue.itemsCount').match(/disponible\w*/)?.[0] : 'disponible'}{products.length !== 1 ? 's' : ''}
                 </span>
             </div>
 
             {/* Type Toggle Bar */}
             <div className="px-5 mt-6 max-w-7xl mx-auto" data-reveal>
-                <div className="flex gap-0 border border-dark/15 w-fit">
+                <div className="flex gap-0 border border-dark/20 w-fit rounded-sm overflow-hidden">
                     {TYPE_TABS.map(tab => (
                         <button
                             key={tab.value}
                             onClick={() => handleTypeChange(tab.value)}
-                            className={`h-10 px-5 font-body text-[10px] tracking-wider uppercase transition-colors ${activeType === tab.value
-                                    ? 'bg-dark text-bg-primary'
-                                    : 'bg-transparent text-dark hover:bg-dark/5'
+                            className={`h-10 px-6 font-body text-[11px] tracking-wider uppercase transition-all duration-200 ${activeType === tab.value
+                                    ? 'bg-dark text-bg-primary font-medium'
+                                    : 'bg-transparent text-dark hover:bg-dark/8'
                                 }`}
                         >
                             {tab.label}
@@ -106,24 +108,24 @@ export default function Catalogue() {
             </div>
 
             {/* Category Filter Bar */}
-            <div className="sticky top-[64px] z-40 bg-bg-primary/95 backdrop-blur-[8px] h-[52px] px-5 border-b border-gold/15 mt-4 flex items-center overflow-x-auto no-scrollbar">
+            <div className="sticky top-[64px] z-40 bg-bg-primary/95 backdrop-blur-[12px] h-[52px] px-5 border-b border-gold/20 mt-4 flex items-center overflow-x-auto no-scrollbar">
                 <div className="flex gap-2 max-w-7xl mx-auto w-full min-w-max pb-1">
                     <button
                         onClick={() => handleCategoryFilter('')}
-                        className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-colors ${!activeCategory
-                                ? 'bg-dark text-bg-primary'
-                                : 'bg-transparent text-dark border border-dark/20 hover:border-dark'
+                        className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-all duration-200 rounded-sm ${!activeCategory
+                                ? 'bg-gold text-dark font-medium'
+                                : 'bg-transparent text-dark border border-dark/20 hover:border-gold hover:text-gold'
                             }`}
                     >
-                        Toutes
+                        {t('catalogue.filters.all')}
                     </button>
                     {categories.map(cat => (
                         <button
                             key={cat._id}
                             onClick={() => handleCategoryFilter(cat.slug)}
-                            className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-colors ${activeCategory === cat.slug
-                                    ? 'bg-dark text-bg-primary'
-                                    : 'bg-transparent text-dark border border-dark/20 hover:border-dark'
+                            className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-all duration-200 rounded-sm ${activeCategory === cat.slug
+                                    ? 'bg-gold text-dark font-medium'
+                                    : 'bg-transparent text-dark border border-dark/20 hover:border-gold hover:text-gold'
                                 }`}
                         >
                             {cat.name}
@@ -140,7 +142,7 @@ export default function Catalogue() {
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xl:gap-6">
                         {products.length === 0 && (
                             <div className="col-span-full text-center py-20 text-text-sec font-body text-[14px]">
-                                Aucun produit dans cette catégorie.
+                                {t('catalogue.noProducts')}
                             </div>
                         )}
                         {products.map(product => (
