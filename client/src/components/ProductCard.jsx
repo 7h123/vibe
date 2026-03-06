@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from '../hooks/useTranslation';
 import { getImageUrl } from '../utils/imageUrl';
 
 export default function ProductCard({ product }) {
+    const { t } = useTranslation();
     const imageSrc = product.images?.[0] ? getImageUrl(product.images[0]) : '/images/products/ig-1-travertine-dining-table.jpg';
     return (
         <Link
@@ -39,7 +41,7 @@ export default function ProductCard({ product }) {
                     {product.material}
                 </span>
                 <p className="font-body text-[10px] tracking-[0.15em] uppercase text-gold">
-                    Voir le produit →
+                    {t('buttons.voirProduit')} →
                 </p>
             </div>
         </Link>

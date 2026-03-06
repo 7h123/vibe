@@ -1,15 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAdmin } from '../../context/AdminContext'
+import { useTranslation } from '../../hooks/useTranslation'
+import { LanguageContext } from '../../context/LanguageContext'
 import { adminLogin } from '../../services/adminApi'
 
 export default function AdminLogin() {
+    const { t } = useTranslation()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const { login } = useAdmin()
     const navigate = useNavigate()
+    const { setLanguage, language } = useContext(LanguageContext)
+
+    // Force French language for admin login
+    useEffect(() => {
+        const previousLanguage = language
+        setLanguage('fr')
+        
+        return () => {
+            // When leaving admin login, restore previous language
+            setLanguage(previousLanguage)
+        }
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -20,7 +35,7 @@ export default function AdminLogin() {
             login(data.token)
             navigate('/admin')
         } catch {
-            setError('Identifiants incorrects. Veuillez réessayer.')
+            setError(t('admin.login.error'))
         } finally {
             setLoading(false)
         }
@@ -34,23 +49,23 @@ export default function AdminLogin() {
                 <div className="text-center mb-10">
                     <div className="inline-block text-left">
                         <span className="font-display font-bold text-[22px] text-dark tracking-[0.25em] block">
-                            NOVA
+                            {t('brand.nova')}
                         </span>
                         <span className="font-body text-[9px] text-gold tracking-[0.4em] block -mt-0.5">
-                            DESIGN
+                            {t('brand.design')}
                         </span>
                         <div className="w-full h-px bg-gold opacity-50 mt-1" />
                     </div>
                 </div>
 
                 <p className="font-body text-[10px] tracking-[0.2em] uppercase text-gold text-center mb-8">
-                    ACCÈS ADMINISTRATEUR
+                    {t('admin.login.tag')}
                 </p>
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-5">
                         <label className="font-body text-[10px] tracking-[0.15em] uppercase text-text-sec block mb-1.5">
-                            IDENTIFIANT
+                            {t('admin.login.username')}
                         </label>
                         <input
                             type="text"
@@ -65,7 +80,7 @@ export default function AdminLogin() {
 
                     <div className="mb-8">
                         <label className="font-body text-[10px] tracking-[0.15em] uppercase text-text-sec block mb-1.5">
-                            MOT DE PASSE
+                            {t('admin.login.password')}
                         </label>
                         <input
                             type="password"
@@ -89,7 +104,7 @@ export default function AdminLogin() {
                        tracking-[0.2em] uppercase hover:bg-dark/80 
                        transition-colors duration-200 disabled:opacity-50"
                     >
-                        {loading ? 'CONNEXION...' : 'SE CONNECTER'}
+                        {loading ? t('buttons.login') + '...' : t('buttons.login')}
                     </button>
                 </form>
             </div>

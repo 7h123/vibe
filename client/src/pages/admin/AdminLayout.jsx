@@ -1,19 +1,37 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAdmin } from '../../context/AdminContext'
-import { useEffect } from 'react'
+import { useTranslation } from '../../hooks/useTranslation'
+import { useEffect, useContext } from 'react'
 import { LayoutDashboard, Package, Grid3X3, ShoppingCart, FileText, LogOut } from 'lucide-react'
+import { LanguageContext } from '../../context/LanguageContext'
 
-const navItems = [
-    { to: '/admin', label: 'TABLEAU DE BORD', icon: LayoutDashboard, exact: true },
-    { to: '/admin/products', label: 'PRODUITS', icon: Package },
-    { to: '/admin/categories', label: 'CATÉGORIES', icon: Grid3X3 },
-    { to: '/admin/orders', label: 'COMMANDES', icon: ShoppingCart },
-    { to: '/admin/devis', label: 'DEVIS', icon: FileText },
+const getNavItems = (t) => [
+    { to: '/admin', label: t('admin.nav.dashboard'), icon: LayoutDashboard, exact: true },
+    { to: '/admin/products', label: t('admin.nav.products'), icon: Package },
+    { to: '/admin/categories', label: t('admin.nav.categories'), icon: Grid3X3 },
+    { to: '/admin/orders', label: t('admin.nav.orders'), icon: ShoppingCart },
+    { to: '/admin/devis', label: t('admin.nav.devis'), icon: FileText },
 ]
 
 export default function AdminLayout() {
-    const { logout } = useAdmin()
+    const { logout, token } = useAdmin()
+    const { t } = useTranslation()
     const navigate = useNavigate()
+    const { setLanguage, language } = useContext(LanguageContext)
+    const navItems = getNavItems(t)
+
+    console.log('AdminLayout token:', token)
+
+    // Force French language for admin area
+    useEffect(() => {
+        const previousLanguage = language
+        setLanguage('fr')
+        
+        return () => {
+            // When leaving admin, restore previous language
+            setLanguage(previousLanguage)
+        }
+    }, [])
 
     useEffect(() => {
         let meta = document.querySelector('meta[name="robots"]');
@@ -34,6 +52,10 @@ export default function AdminLayout() {
         navigate('/admin/login')
     }
 
+    if (!token) {
+        return <div className="w-full h-screen bg-red-500 flex items-center justify-center text-white text-2xl">Not Authenticated</div>
+    }
+
     return (
         <div className="flex min-h-screen">
 
@@ -42,8 +64,8 @@ export default function AdminLayout() {
 
                 {/* Logo */}
                 <div className="p-6 border-b border-white/10">
-                    <span className="font-display font-bold text-[18px] text-cream tracking-[0.25em] block">NOVA</span>
-                    <span className="font-body text-[8px] text-gold tracking-[0.4em] block -mt-0.5">DESIGN · ADMIN</span>
+                    <span className="font-display font-bold text-[18px] text-cream tracking-[0.25em] block">{t('brand.nova')}</span>
+                    <span className="font-body text-[8px] text-gold tracking-[0.4em] block -mt-0.5">{t('admin.designAdmin')}</span>
                 </div>
 
                 {/* Nav */}
@@ -78,7 +100,7 @@ export default function AdminLayout() {
                          tracking-[0.15em] text-cream/60 hover:text-gold 
                          transition-colors duration-200"
                     >
-                        &larr; RETOUR AU SITE
+                        &larr; {t('admin.backToSite')}
                     </a>
                     <button
                         onClick={handleLogout}
@@ -87,7 +109,7 @@ export default function AdminLayout() {
                          transition-colors duration-200 border-t border-white/5"
                     >
                         <LogOut size={15} />
-                        DÉCONNEXION
+                        {t('buttons.logout')}
                     </button>
                 </div>
             </aside>

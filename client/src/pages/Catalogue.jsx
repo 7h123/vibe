@@ -2,21 +2,23 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getProducts, getCategories } from '../services/api';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useTranslation } from '../hooks/useTranslation';
 import ProductCard from '../components/ProductCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-const TYPE_TABS = [
-    { label: 'TOUT', value: '' },
-    { label: 'DÉCORATION ARTISANALE', value: 'decoration' },
-    { label: 'MARBRE & PIERRE', value: 'marbre' },
-];
-
 export default function Catalogue() {
     useScrollReveal();
+    const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const TYPE_TABS = [
+        { label: t('catalogue.tabs.all'), value: '' },
+        { label: t('catalogue.tabs.decoration'), value: 'decoration' },
+        { label: t('catalogue.tabs.marble'), value: 'marbre' },
+    ];
 
     const activeType = searchParams.get('type') || '';
     const activeCategory = searchParams.get('category') || '';
@@ -79,11 +81,11 @@ export default function Catalogue() {
         <div className="w-full min-h-screen bg-bg-primary pt-[64px]">
             {/* Header */}
             <div className="pt-10 px-5 max-w-7xl mx-auto" data-reveal>
-                <span className="font-body text-[10px] text-gold uppercase tracking-wider block mb-2">COLLECTION</span>
-                <h1 className="font-display text-[36px] font-[500] text-dark leading-none">Notre Catalogue</h1>
+                <span className="font-body text-[10px] text-gold uppercase tracking-wider block mb-2">{t('catalogue.tag')}</span>
+                <h1 className="font-display text-[36px] font-[500] text-dark leading-none">{t('catalogue.titre')}</h1>
                 <div className="w-10 h-[1px] bg-gold my-4"></div>
                 <span className="font-body text-[12px] text-text-sec">
-                    {products.length} pièce{products.length !== 1 ? 's' : ''} disponible{products.length !== 1 ? 's' : ''}
+                    {products.length} {products.length !== 1 ? t('catalogue.itemsCount').split('{')[1]?.match(/\w+/)?.[0] : 'pièce'} {t('catalogue.itemsCount').includes('disponible') ? t('catalogue.itemsCount').match(/disponible\w*/)?.[0] : 'disponible'}{products.length !== 1 ? 's' : ''}
                 </span>
             </div>
 
@@ -115,7 +117,7 @@ export default function Catalogue() {
                                 : 'bg-transparent text-dark border border-dark/20 hover:border-dark'
                             }`}
                     >
-                        Toutes
+                        {t('catalogue.filters.all')}
                     </button>
                     {categories.map(cat => (
                         <button
@@ -140,7 +142,7 @@ export default function Catalogue() {
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xl:gap-6">
                         {products.length === 0 && (
                             <div className="col-span-full text-center py-20 text-text-sec font-body text-[14px]">
-                                Aucun produit dans cette catégorie.
+                                {t('catalogue.noProducts')}
                             </div>
                         )}
                         {products.map(product => (
