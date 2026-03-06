@@ -15,7 +15,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="fixed top-0 left-0 w-full h-[64px] backdrop-blur-[8px] z-50 flex items-center justify-between px-5" style={{ backgroundColor: 'var(--navbar-bg)' }}>
+            <nav className="fixed top-0 left-0 w-full h-[64px] backdrop-blur-[12px] z-50 flex items-center justify-between px-5 border-b" style={{ backgroundColor: 'var(--navbar-bg)', borderColor: 'var(--border)' }}>
                 <div className="flex flex-col">
                     <Link to="/" className="font-display font-bold text-[22px] text-dark tracking-[0.25em] leading-none">{t('brand.nova')}</Link>
                     <span className="font-body text-[9px] text-gold tracking-[0.4em] block -mt-[2px]">{t('brand.design')}</span>
@@ -23,12 +23,12 @@ export default function Navbar() {
                 </div>
 
                 {/* Desktop Links */}
-                <div className="hidden xl:flex items-center gap-10 font-body text-[11px] font-[500] tracking-wider uppercase text-dark">
-                    <Link to="/">{t('nav.accueil')}</Link>
-                    <Link to="/catalogue">{t('nav.catalogue')}</Link>
-                    <Link to="/a-propos">{t('nav.apropos')}</Link>
-                    <Link to="/sur-mesure">{t('nav.surMesure')}</Link>
-                    <Link to="/contact">{t('nav.contact')}</Link>
+                <div className="hidden xl:flex items-center gap-10 font-body text-[12px] font-[500] tracking-wider uppercase text-dark">
+                    <Link to="/" className="nav-link-luxury">{t('nav.accueil')}</Link>
+                    <Link to="/catalogue" className="nav-link-luxury">{t('nav.catalogue')}</Link>
+                    <Link to="/a-propos" className="nav-link-luxury">{t('nav.apropos')}</Link>
+                    <Link to="/sur-mesure" className="nav-link-luxury">{t('nav.surMesure')}</Link>
+                    <Link to="/contact" className="nav-link-luxury">{t('nav.contact')}</Link>
                 </div>
 
                 <div className="flex items-center gap-3">

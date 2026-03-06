@@ -267,16 +267,16 @@ export default function FAQSection() {
                 {/* Category Header */}
                 <button
                   onClick={() => toggleCategory(category.id)}
-                  className="w-full bg-gold hover:bg-gold/90 transition-colors duration-300 px-6 py-5 flex items-center justify-between group"
+                  className="w-full bg-dark hover:bg-dark/90 transition-colors duration-300 px-6 py-5 flex items-center justify-between group"
                   aria-expanded={expandedCategory === category.id}
                   aria-controls={`faq-${category.id}`}
                 >
-                  <h3 className="font-display text-[14px] lg:text-[15px] font-[600] text-white text-left">
+                  <h3 className="font-display text-[14px] lg:text-[15px] font-[600] text-bg-primary text-left">
                     {category.title}
                   </h3>
                   <ChevronDown
                     size={20}
-                    className="text-white flex-shrink-0 transition-transform duration-300"
+                    className="text-gold flex-shrink-0 transition-transform duration-300"
                     style={{
                       transform:
                         expandedCategory === category.id ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -287,7 +287,7 @@ export default function FAQSection() {
                 {/* Category Body — Questions & Answers */}
                 <div
                   id={`faq-${category.id}`}
-                  className={`overflow-hidden bg-white transition-all duration-300 ease-in-out ${
+                  className={`overflow-hidden bg-bg-card transition-all duration-300 ease-in-out ${
                     expandedCategory === category.id ? 'max-h-[3000px]' : 'max-h-0'
                   }`}
                 >

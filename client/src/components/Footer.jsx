@@ -23,21 +23,21 @@ export default function Footer() {
                 {/* Navigation */}
                 <div className="flex flex-col gap-3">
                     <span className="font-body text-[10px] text-gold font-[500] tracking-wider uppercase mb-1">{t('footer.navigation')}</span>
-                    <Link to="/" className="font-body text-[13px] font-[500] text-cream/90">{t('nav.accueil')}</Link>
-                    <Link to="/catalogue" className="font-body text-[13px] font-[500] text-cream/90">{t('nav.catalogue')}</Link>
-                    <Link to="/a-propos" className="font-body text-[13px] font-[500] text-cream/90">{t('nav.apropos')}</Link>
-                    <Link to="/sur-mesure" className="font-body text-[13px] font-[500] text-cream/90">{t('nav.surMesure')}</Link>
-                    <Link to="/contact" className="font-body text-[13px] font-[500] text-cream/90">{t('nav.contact')}</Link>
+                    <Link to="/" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('nav.accueil')}</Link>
+                    <Link to="/catalogue" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('nav.catalogue')}</Link>
+                    <Link to="/a-propos" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('nav.apropos')}</Link>
+                    <Link to="/sur-mesure" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('nav.surMesure')}</Link>
+                    <Link to="/contact" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('nav.contact')}</Link>
                 </div>
 
                 {/* Collections */}
                 <div className="flex flex-col gap-3">
                     <span className="font-body text-[10px] text-gold font-[500] tracking-wider uppercase mb-1">{t('footer.collections')}</span>
-                    <Link to="/catalogue?type=marbre" className="font-body text-[13px] font-[500] text-cream/90">{t('footer.marbreEtPierre')}</Link>
-                    <Link to="/catalogue?type=decoration" className="font-body text-[13px] font-[500] text-cream/90">{t('footer.decoration')}</Link>
-                    <Link to="/catalogue?category=tables" className="font-body text-[13px] font-[500] text-cream/90">{t('footer.tables')}</Link>
-                    <Link to="/catalogue?category=consoles" className="font-body text-[13px] font-[500] text-cream/90">{t('footer.consoles')}</Link>
-                    <Link to="/catalogue?category=vasques" className="font-body text-[13px] font-[500] text-cream/90">{t('footer.vasques')}</Link>
+                    <Link to="/catalogue?type=marbre" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('footer.marbreEtPierre')}</Link>
+                    <Link to="/catalogue?type=decoration" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('footer.decoration')}</Link>
+                    <Link to="/catalogue?category=tables" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('footer.tables')}</Link>
+                    <Link to="/catalogue?category=consoles" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('footer.consoles')}</Link>
+                    <Link to="/catalogue?category=vasques" className="font-body text-[13px] font-[500] text-cream/90 hover:text-gold transition-colors duration-200">{t('footer.vasques')}</Link>
                 </div>
 
                 {/* Contact info */}
