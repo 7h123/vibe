@@ -39,14 +39,14 @@ export default function Contact() {
                 <div className="w-full xl:w-5/12" data-reveal>
                     <div className="flex flex-col gap-4">
 
-                        <a href="https://wa.me/212649668465" target="_blank" rel="noreferrer" className="group bg-bg-secondary p-6 border-l-[3px] border-gold hover:bg-bg-primary transition-colors">
+                        <a href="https://wa.me/212649668465" target="_blank" rel="noreferrer" className="group bg-bg-secondary p-6 border-l-[3px] border-gold hover:bg-bg-primary transition-all duration-200 hover:shadow-md">
                             <Phone size={24} className="text-gold mb-3" strokeWidth={1.5} />
                             <h3 className="font-display text-[18px] text-dark mb-1">{t('contact.whatsapp.title')}</h3>
                             <p className="font-body text-[12px] text-text-sec mb-4">{t('contact.whatsapp.number')}</p>
                             <span className="font-body text-[11px] text-gold tracking-wider uppercase group-hover:underline underline-offset-4">{t('buttons.envoyer')} &rarr;</span>
                         </a>
 
-                        <a href="https://instagram.com/novadesign.maa" target="_blank" rel="noreferrer" className="group bg-bg-secondary p-6 border-l-[3px] border-gold hover:bg-bg-primary transition-colors">
+                        <a href="https://instagram.com/novadesign.maa" target="_blank" rel="noreferrer" className="group bg-bg-secondary p-6 border-l-[3px] border-gold hover:bg-bg-primary transition-all duration-200 hover:shadow-md">
                             <Instagram size={24} className="text-gold mb-3" strokeWidth={1.5} />
                             <h3 className="font-display text-[18px] text-dark mb-1">{t('contact.instagram.title')}</h3>
                             <p className="font-body text-[12px] text-text-sec mb-4">{t('contact.instagram.handle')}</p>
@@ -64,7 +64,7 @@ export default function Contact() {
 
                 {/* Contact Form */}
                 <div className="w-full xl:w-7/12" data-reveal>
-                    <div className="bg-bg-secondary p-6 xl:p-10 border border-gold/15 relative">
+                    <div className="bg-bg-secondary p-6 xl:p-10 border border-gold/20 relative shadow-sm">
                         {status === 'success' ? (
                             <div className="text-center py-20">
                                 <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4 text-gold text-2xl">✓</div>
@@ -105,7 +105,7 @@ export default function Contact() {
                                 <button
                                     type="submit"
                                     disabled={status === 'loading'}
-                                    className="w-full h-[52px] bg-dark text-bg-primary font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-2"
+                                    className="btn-luxury btn-luxury-primary w-full h-[52px] font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-2"
                                 >
                                     {status === 'loading' ? 'ENVOI...' : t('buttons.envoyerMessage')}
                                 </button>

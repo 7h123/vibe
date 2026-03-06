@@ -49,7 +49,7 @@ export default function Panier() {
                     {cartItems.length === 0 ? (
                         <div className="py-10 text-center xl:text-left">
                             <p className="font-body text-[14px] text-text-sec mb-6">{t('panier.panierVide')}</p>
-                            <Link to="/catalogue" className="bg-dark text-bg-primary font-body text-[11px] font-medium tracking-wider uppercase h-11 px-8 inline-flex items-center">
+                            <Link to="/catalogue" className="btn-luxury btn-luxury-primary font-body text-[11px] font-medium tracking-wider uppercase h-11 px-8 inline-flex items-center">
                                 {t('panier.decouvrirCreations')}
                             </Link>
                         </div>
@@ -78,11 +78,11 @@ export default function Panier() {
                                         )}
 
                                         <div className="flex justify-between items-end mt-auto">
-                                            <div className="flex items-center h-8 border border-dark/20 text-[12px] font-body">
-                                                <button onClick={() => updateQty(item.product, item.qty - 1)} className="w-8 flex justify-center text-text-sec hover:text-dark">-</button>
-                                                <span className="w-8 flex justify-center border-x border-dark/20 text-dark">{item.qty}</span>
-                                                <button onClick={() => updateQty(item.product, item.qty + 1)} className="w-8 flex justify-center text-text-sec hover:text-dark">+</button>
-                                            </div>
+                                                    <div className="flex items-center h-8 border border-dark/20 rounded-sm text-[12px] font-body">
+                                                        <button onClick={() => updateQty(item.product, item.qty - 1)} className="w-8 flex justify-center text-text-sec hover:text-gold transition-colors">-</button>
+                                                        <span className="w-8 flex justify-center border-x border-dark/20 text-dark font-medium">{item.qty}</span>
+                                                        <button onClick={() => updateQty(item.product, item.qty + 1)} className="w-8 flex justify-center text-text-sec hover:text-gold transition-colors">+</button>
+                                                    </div>
                                             <span className="font-body text-[16px] font-semibold text-gold">
                                                 {(item.price * item.qty).toLocaleString()} MAD
                                             </span>
@@ -97,7 +97,7 @@ export default function Panier() {
                 {/* Order Form */}
                 {cartItems.length > 0 && (
                     <div className="w-full xl:w-5/12 mt-10 xl:mt-0 relative">
-                        <div className="bg-bg-secondary p-6 border border-gold/15 sticky top-[100px]">
+                        <div className="bg-bg-secondary p-6 border border-gold/20 shadow-sm sticky top-[100px]">
                             <h2 className="font-display text-[20px] text-dark mb-6">{t('panier.confirmation')}</h2>
 
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -133,7 +133,7 @@ export default function Panier() {
                                 <button
                                     type="submit"
                                     disabled={status === 'loading'}
-                                    className="w-full h-[52px] bg-gold text-dark font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-4"
+                                    className="btn-luxury btn-luxury-primary w-full h-[52px] font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-4"
                                 >
                                     {status === 'loading' ? t('buttons.charger') : t('panier.passerCommande')}
                                 </button>

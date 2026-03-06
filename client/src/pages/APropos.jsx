@@ -145,7 +145,7 @@ export default function APropos() {
                         { value: '30+', label: t('apropos.stats.marbleTypes') },
                         { value: '100%', label: t('apropos.stats.satisfaction') },
                     ].map((stat, i) => (
-                        <div key={i} className="border border-gold/30 p-8 text-center">
+                        <div key={i} className="border border-gold/30 p-8 text-center hover:border-gold/60 transition-colors duration-300">
                             <span className="font-serif text-[40px] text-gold leading-none block mb-2">{stat.value}</span>
                             <span className="font-body text-[10px] tracking-[0.2em] uppercase text-white/90">{stat.label}</span>
                         </div>
@@ -189,12 +189,12 @@ export default function APropos() {
                         {t('apropos.cta.desc')}
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Link to="/catalogue" className="border border-gold text-gold font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-8 flex items-center justify-center hover:bg-gold hover:text-dark transition-colors">
-                            {t('buttons.decouvrir')}
-                        </Link>
-                        <Link to="/contact" className="bg-gold text-dark font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-8 flex items-center justify-center hover:bg-gold/80 transition-colors">
-                            {t('buttons.contacter')}
-                        </Link>
+                            <Link to="/catalogue" className="btn-luxury btn-luxury-secondary font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-8 flex items-center justify-center" style={{ color: '#d4af5a', borderColor: '#d4af5a' }}>
+                                {t('buttons.decouvrir')}
+                            </Link>
+                            <Link to="/contact" className="btn-luxury font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-8 flex items-center justify-center hover:opacity-90 transition-opacity" style={{ background: '#d4af5a', color: '#1a1a0e' }}>
+                                {t('buttons.contacter')}
+                            </Link>
                     </div>
                 </div>
             </section>

@@ -91,14 +91,14 @@ export default function Catalogue() {
 
             {/* Type Toggle Bar */}
             <div className="px-5 mt-6 max-w-7xl mx-auto" data-reveal>
-                <div className="flex gap-0 border border-dark/15 w-fit">
+                <div className="flex gap-0 border border-dark/20 w-fit rounded-sm overflow-hidden">
                     {TYPE_TABS.map(tab => (
                         <button
                             key={tab.value}
                             onClick={() => handleTypeChange(tab.value)}
-                            className={`h-10 px-5 font-body text-[10px] tracking-wider uppercase transition-colors ${activeType === tab.value
-                                    ? 'bg-dark text-bg-primary'
-                                    : 'bg-transparent text-dark hover:bg-dark/5'
+                            className={`h-10 px-6 font-body text-[11px] tracking-wider uppercase transition-all duration-200 ${activeType === tab.value
+                                    ? 'bg-dark text-bg-primary font-medium'
+                                    : 'bg-transparent text-dark hover:bg-dark/8'
                                 }`}
                         >
                             {tab.label}
@@ -108,13 +108,13 @@ export default function Catalogue() {
             </div>
 
             {/* Category Filter Bar */}
-            <div className="sticky top-[64px] z-40 bg-bg-primary/95 backdrop-blur-[8px] h-[52px] px-5 border-b border-gold/15 mt-4 flex items-center overflow-x-auto no-scrollbar">
+            <div className="sticky top-[64px] z-40 bg-bg-primary/95 backdrop-blur-[12px] h-[52px] px-5 border-b border-gold/20 mt-4 flex items-center overflow-x-auto no-scrollbar">
                 <div className="flex gap-2 max-w-7xl mx-auto w-full min-w-max pb-1">
                     <button
                         onClick={() => handleCategoryFilter('')}
-                        className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-colors ${!activeCategory
-                                ? 'bg-dark text-bg-primary'
-                                : 'bg-transparent text-dark border border-dark/20 hover:border-dark'
+                        className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-all duration-200 rounded-sm ${!activeCategory
+                                ? 'bg-gold text-dark font-medium'
+                                : 'bg-transparent text-dark border border-dark/20 hover:border-gold hover:text-gold'
                             }`}
                     >
                         {t('catalogue.filters.all')}
@@ -123,9 +123,9 @@ export default function Catalogue() {
                         <button
                             key={cat._id}
                             onClick={() => handleCategoryFilter(cat.slug)}
-                            className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-colors ${activeCategory === cat.slug
-                                    ? 'bg-dark text-bg-primary'
-                                    : 'bg-transparent text-dark border border-dark/20 hover:border-dark'
+                            className={`h-8 px-4 flex items-center justify-center font-body text-[10px] tracking-wider uppercase transition-all duration-200 rounded-sm ${activeCategory === cat.slug
+                                    ? 'bg-gold text-dark font-medium'
+                                    : 'bg-transparent text-dark border border-dark/20 hover:border-gold hover:text-gold'
                                 }`}
                         >
                             {cat.name}

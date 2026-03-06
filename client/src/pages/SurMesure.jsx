@@ -57,26 +57,26 @@ export default function SurMesure() {
                 <div className="w-full xl:w-5/12 px-5 mb-12 xl:mb-0 xl:pr-16" data-reveal>
                     <div className="flex flex-col gap-8">
                         <div className="flex flex-col border-b border-gold/20 pb-8">
-                            <span className="font-display text-[64px] text-gold/20 leading-none mb-2">01</span>
+                            <span className="font-display text-[64px] text-gold/30 leading-none mb-2">01</span>
                             <h3 className="font-display text-[20px] text-dark mb-2">{t('surMesure.steps.step1.title')}</h3>
-                            <p className="font-body text-[13px] text-text-sec">{t('surMesure.steps.step1.desc')}</p>
+                            <p className="font-body text-[13px] text-text-sec leading-relaxed">{t('surMesure.steps.step1.desc')}</p>
                         </div>
                         <div className="flex flex-col border-b border-gold/20 pb-8">
-                            <span className="font-display text-[64px] text-gold/20 leading-none mb-2">02</span>
+                            <span className="font-display text-[64px] text-gold/30 leading-none mb-2">02</span>
                             <h3 className="font-display text-[20px] text-dark mb-2">{t('surMesure.steps.step2.title')}</h3>
-                            <p className="font-body text-[13px] text-text-sec">{t('surMesure.steps.step2.desc')}</p>
+                            <p className="font-body text-[13px] text-text-sec leading-relaxed">{t('surMesure.steps.step2.desc')}</p>
                         </div>
                         <div className="flex flex-col">
-                            <span className="font-display text-[64px] text-gold/20 leading-none mb-2">03</span>
+                            <span className="font-display text-[64px] text-gold/30 leading-none mb-2">03</span>
                             <h3 className="font-display text-[20px] text-dark mb-2">{t('surMesure.steps.step3.title')}</h3>
-                            <p className="font-body text-[13px] text-text-sec">{t('surMesure.steps.step3.desc')}</p>
+                            <p className="font-body text-[13px] text-text-sec leading-relaxed">{t('surMesure.steps.step3.desc')}</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Form Card */}
                 <div className="w-full xl:w-7/12 px-5" data-reveal>
-                    <div className="bg-bg-secondary p-6 xl:p-10 border border-gold/15">
+                    <div className="bg-bg-secondary p-6 xl:p-10 border border-gold/20 shadow-sm">
                         <h2 className="font-display text-[24px] text-dark mb-2">{t('surMesure.form.title')}</h2>
                         <div className="w-8 h-[1px] bg-gold mb-8"></div>
 
@@ -159,7 +159,7 @@ export default function SurMesure() {
                                 <button
                                     type="submit"
                                     disabled={status === 'loading'}
-                                    className="w-full h-[52px] bg-gold text-dark font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-2"
+                                    className="btn-luxury btn-luxury-primary w-full h-[52px] font-body text-[11px] font-semibold tracking-wider uppercase disabled:opacity-70 mt-2"
                                 >
                                     {status === 'loading' ? t('surMesure.form.submitting') : t('surMesure.form.submit')}
                                 </button>

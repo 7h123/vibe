@@ -117,13 +117,15 @@ export default function Home() {
                     >
                         <Link
                             to="/catalogue"
-                            className="btn-luxury btn-luxury-primary font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-8 flex items-center justify-center min-w-[200px]"
+                            className="btn-luxury font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-8 flex items-center justify-center min-w-[200px]"
+                            style={{ background: '#f5f0e8', color: '#1a1a0e', border: '1px solid transparent' }}
                         >
                             {t('buttons.voirCollection')}
                         </Link>
                         <Link
                             to="/sur-mesure"
-                            className="btn-luxury btn-luxury-secondary font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-7 flex items-center justify-center min-w-[200px]"
+                            className="btn-luxury font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-7 flex items-center justify-center min-w-[200px]"
+                            style={{ background: 'transparent', color: '#f5f0e8', border: '1.5px solid rgba(245,240,232,0.6)' }}
                         >
                             {t('buttons.surMesure')}
                         </Link>
@@ -159,7 +161,7 @@ export default function Home() {
                         <div className="gold-separator mb-4" />
                         <h2 className="font-display text-[36px] xl:text-[44px] font-semibold text-white leading-none mb-2">{t('home.decoration.title')}</h2>
                         <p className="font-body text-[14px] font-normal text-white/85 mb-6">{t('home.decoration.desc')}</p>
-                        <span className="btn-luxury bg-white/10 backdrop-blur-sm border border-white/25 text-white font-body text-[11px] font-medium tracking-[0.2em] uppercase h-11 px-6 flex items-center justify-center">
+                        <span className="btn-luxury bg-white/15 backdrop-blur-sm border border-white/40 text-white font-body text-[11px] font-medium tracking-[0.2em] uppercase h-11 px-6 flex items-center justify-center hover:bg-white/25 transition-colors">
                             {t('buttons.decouvrir')} →
                         </span>
                     </div>
@@ -179,7 +181,7 @@ export default function Home() {
                         <div className="gold-separator mb-4" />
                         <h2 className="font-display text-[36px] xl:text-[44px] font-semibold text-white leading-none mb-2">{t('home.marble.title')}</h2>
                         <p className="font-body text-[14px] font-normal text-white/85 mb-6">{t('home.marble.desc')}</p>
-                        <span className="btn-luxury bg-white/10 backdrop-blur-sm border border-white/25 text-white font-body text-[11px] font-medium tracking-[0.2em] uppercase h-11 px-6 flex items-center justify-center">
+                        <span className="btn-luxury bg-white/15 backdrop-blur-sm border border-white/40 text-white font-body text-[11px] font-medium tracking-[0.2em] uppercase h-11 px-6 flex items-center justify-center hover:bg-white/25 transition-colors">
                             {t('buttons.decouvrir')} →
                         </span>
                     </div>
@@ -284,20 +286,20 @@ export default function Home() {
                         <p className="font-sans text-[14px] xl:text-[15px] font-normal leading-[1.9] mb-10" style={{ color: '#555' }}>
                             {t('home.about.desc')}
                         </p>
-                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <Link
-                                to="/catalogue"
-                                className="btn-luxury btn-luxury-primary font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-7 flex items-center justify-center"
-                            >
-                                {t('buttons.voirCollection')}
-                            </Link>
-                            <Link
-                                to="/sur-mesure"
-                                className="btn-luxury btn-luxury-secondary font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-6 flex items-center justify-center"
-                            >
-                                {t('buttons.surMesure')}
-                            </Link>
-                        </div>
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                                <Link
+                                    to="/catalogue"
+                                    className="btn-luxury btn-luxury-primary font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-7 flex items-center justify-center"
+                                >
+                                    {t('buttons.voirCollection')}
+                                </Link>
+                                <Link
+                                    to="/sur-mesure"
+                                    className="btn-luxury btn-luxury-secondary font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-6 flex items-center justify-center"
+                                >
+                                    {t('buttons.surMesure')}
+                                </Link>
+                            </div>
                     </div>
                 </div>
             </section>
@@ -389,7 +391,7 @@ export default function Home() {
             >
                 <div className="h-full flex flex-col items-center justify-center px-6 py-16 text-center" data-reveal>
                     <span className="font-body text-[10px] tracking-[0.2em] uppercase mb-4" style={{ color: 'rgba(26,26,14,0.6)' }}>NOVA DESIGN</span>
-                    <h2 className="font-display text-[30px] xl:text-[36px] font-medium mb-3" style={{ color: '#1a1a0e' }}>
+                    <h2 className="font-display text-[30px] xl:text-[36px] font-semibold mb-3" style={{ color: '#1a1a0e' }}>
                         {t('home.cta.title')}
                     </h2>
                     <p className="font-body text-[13px] font-normal mb-8" style={{ color: 'rgba(26,26,14,0.8)' }}>
@@ -400,7 +402,7 @@ export default function Home() {
                             href="https://wa.me/212649668465"
                             target="_blank"
                             rel="noreferrer"
-                            className="btn-luxury font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-8 flex items-center justify-center gap-3"
+                            className="btn-luxury font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-8 flex items-center justify-center gap-3 hover:opacity-90 transition-opacity"
                             style={{ background: '#1a1a0e', color: '#f5f0e8' }}
                         >
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -411,7 +413,7 @@ export default function Home() {
                         <Link
                             to="/catalogue"
                             className="btn-luxury font-body text-[11px] font-medium tracking-[0.2em] uppercase h-12 px-7 flex items-center justify-center"
-                            style={{ background: 'transparent', color: '#1a1a0e', border: '1px solid rgba(26,26,14,0.4)' }}
+                            style={{ background: 'transparent', color: '#1a1a0e', border: '1.5px solid rgba(26,26,14,0.5)' }}
                         >
                             {t('buttons.voirCollection')}
                         </Link>
